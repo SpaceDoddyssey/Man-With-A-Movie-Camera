@@ -8,11 +8,13 @@ let config = {
     physics: {
         default: 'arcade',
         arcade: {
-            debug: true,
+            debug: true
         }
     },
     scene: [ Menu, OperatorScene, ShootingGallery, EmergencyServices ]
 }
+
+
 
 let game = new Phaser.Game(config);
 
