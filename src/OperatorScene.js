@@ -4,8 +4,9 @@ class OperatorScene extends Phaser.Scene {
     }
 
     preload() {
-      this.load.image('switchSprite', 'assets/switch.png')
-      this.load.image('plugSprite', 'assets/plug.png')
+      this.load.image('switchSprite',         'assets/switch.png')
+      this.load.image('switchIncomingSprite', 'assets/switch_incoming_call.png')
+      this.load.image('plugSprite',           'assets/plug.png')
     }
 
     create(){
@@ -60,14 +61,50 @@ class OperatorScene extends Phaser.Scene {
             let yPos = s.y;
 
             let plugSprite = this.add.sprite(xPos, yPos, 'plugSprite').setOrigin(0.5, 0.5);
+            s.plug = plugSprite;
+            plugSprite.switch = s;
             plugSprite.setInteractive();
             plugSprite.coords = coords;
             this.plugs.push(plugSprite);
         }
     }
 
+    update(){
 
+    }
 
+    receiveCall(){
+        let foundOne = false;
+        while(!foundOne){
+            let x = Phaser.Math.Between(0, this.gridWidth-1);
+            let y = Phaser.Math.Between(0, this.gridHeight-1);
+            let s = this.switches[this.gridWidth * y + x];
+            if(!s.occupied && !s.incomingCall){ foundOne = true; }
+
+            s.incomingCall = true;
+            s.setTexture('switchIncomingSprite');
+        }
+    }
+
+    reset(object){
+        object.x = object.oldX;
+        object.y = object.oldY;
+    }
+
+    plugInto(x, y, plug){
+        let s = this.switches[this.gridWidth * y + x];
+        console.log(x, y, plug.switch.x, plug.switch.y, plug.switch.occupied, s.occupied);
+        if(s.occupied){
+            this.reset(plug);
+            return;
+        }
+        //Location is valid
+        s.occupied = true;
+        s.plug = plug;
+        plug.switch.occupied = false;
+        plug.switch = s;
+        console.log(s.x, s.y);
+    }
 
 
 
@@ -119,21 +156,8 @@ class OperatorScene extends Phaser.Scene {
         this.dragObject.x = xPos; this.dragObject.y = yPos;
         //console.log(xFloor, yFloor, pointer.x, pointer.y, xPos, yPos);
 
-        //Plug it into the appropriate switch
+        //(Attempt to) plug it into the appropriate switch
         this.plugInto(xFloor, yFloor, this.dragObject);
-    }
-
-    reset(object){
-        object.x = object.oldX;
-        object.y = object.oldY;
-    }
-    plugInto(x, y, plug){
-        let s = this.switches[this.gridWidth * y + x];
-        if(s.occupied){
-            this.reset(plug);
-        }
-        s.occupied = true;
-        console.log(s.x, s.y);
     }
 
     createGrid(){
@@ -152,6 +176,7 @@ class OperatorScene extends Phaser.Scene {
 
                 let switchSprite = this.add.sprite(x, y, 'switchSprite').setOrigin(0.5, 0.5);
                 switchSprite.occupied = false;
+                switchSprite.incomingCall = false;
                 this.switches.push(switchSprite);
                 //switchesGroup.add(switchSprite);
             }
