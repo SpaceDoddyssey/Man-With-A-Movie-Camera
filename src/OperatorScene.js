@@ -36,37 +36,7 @@ class OperatorScene extends Phaser.Scene {
 
         //Spawn plugs
         const numPlugs = 6;
-        for(let i = 0; i < numPlugs; i++){
-            let x = Phaser.Math.Between(0, this.gridWidth-1);
-            let y = Phaser.Math.Between(0, this.gridHeight-1);
-            let coords = [ x, y ];
-            
-            let failure = false;
-            for (let index = 0; index < this.plugs.length; index++) {
-                const plug = this.plugs[index];
-                if (plug.coords[0] == coords[0] && plug.coords[1] == coords[1]){
-                    failure = true;
-                    break;
-                }   
-            }
-            if(failure){
-                i--;
-                continue;
-            }
-
-            //console.log(y, x, this.gridWidth * y + x)
-            let s = this.switches[this.gridWidth * y + x];
-            s.occupied = true;
-            let xPos = s.x;
-            let yPos = s.y;
-
-            let plugSprite = this.add.sprite(xPos, yPos, 'plugSprite').setOrigin(0.5, 0.5);
-            s.plug = plugSprite;
-            plugSprite.switch = s;
-            plugSprite.setInteractive();
-            plugSprite.coords = coords;
-            this.plugs.push(plugSprite);
-        }
+        this.spawnPlugs(numPlugs);
     }
 
     update(){
@@ -180,6 +150,39 @@ class OperatorScene extends Phaser.Scene {
                 this.switches.push(switchSprite);
                 //switchesGroup.add(switchSprite);
             }
+        }
+    }
+    spawnPlugs(numPlugs){
+        for(let i = 0; i < numPlugs; i++){
+            let x = Phaser.Math.Between(0, this.gridWidth-1);
+            let y = Phaser.Math.Between(0, this.gridHeight-1);
+            let coords = [ x, y ];
+            
+            let failure = false;
+            for (let index = 0; index < this.plugs.length; index++) {
+                const plug = this.plugs[index];
+                if (plug.coords[0] == coords[0] && plug.coords[1] == coords[1]){
+                    failure = true;
+                    break;
+                }   
+            }
+            if(failure){
+                i--;
+                continue;
+            }
+
+            //console.log(y, x, this.gridWidth * y + x)
+            let s = this.switches[this.gridWidth * y + x];
+            s.occupied = true;
+            let xPos = s.x;
+            let yPos = s.y;
+
+            let plugSprite = this.add.sprite(xPos, yPos, 'plugSprite').setOrigin(0.5, 0.5);
+            s.plug = plugSprite;
+            plugSprite.switch = s;
+            plugSprite.setInteractive();
+            plugSprite.coords = coords;
+            this.plugs.push(plugSprite);
         }
     }
 }
