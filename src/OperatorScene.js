@@ -23,7 +23,7 @@ class OperatorScene extends Phaser.Scene {
         this.switches = [];
         this.plugs = [];
 
-        //this.input.on('pointerdown',this.startDrag,this);
+        this.input.on('pointerdown',this.startDrag,this);
 
         this.spriteWidth = 100;   // Width of the space given to each sprite
         this.spriteHeight = 100; // Height of the space given to each sprite
@@ -53,11 +53,13 @@ class OperatorScene extends Phaser.Scene {
                 continue;
             }
 
-            console.log(this.plugs.length);
-            console.log(y, x, this.gridWidth * y + x)
-            let xPos = this.switches[this.gridWidth * y + x].x;
-            let yPos = this.switches[this.gridWidth * y + x].y;
-            let plugSprite = this.add.sprite(xPos, yPos, 'plugSprite');
+            //console.log(y, x, this.gridWidth * y + x)
+            let s = this.switches[this.gridWidth * y + x];
+            s.occupied = true;
+            let xPos = s.x;
+            let yPos = s.y;
+
+            let plugSprite = this.add.sprite(xPos, yPos, 'plugSprite').setOrigin(0.5, 0.5);
             plugSprite.setInteractive();
             plugSprite.coords = coords;
             this.plugs.push(plugSprite);
@@ -86,6 +88,8 @@ class OperatorScene extends Phaser.Scene {
     startDrag(pointer, targets){
         this.dragObject = targets[0];
         if(this.dragObject != undefined){
+            this.dragObject.oldX = this.dragObject.x;
+            this.dragObject.oldY = this.dragObject.y;
             this.dragObject.isGrabbed = true;
             this.input.off('pointerdown', this.startDrag, this);
             this.input.on('pointermove', this.doDrag, this);
@@ -103,12 +107,34 @@ class OperatorScene extends Phaser.Scene {
 
         this.dragObject.isGrabbed = false;
 
-        //Determine which switch you are dropping the plug onto
-        //let xPos = ()
+        //Snap the plug to the right location
+        let xFloor = Math.floor((pointer.x - this.startX) / this.spriteWidth);
+        if(xFloor < 0) { xFloor = 0; } else if (xFloor > this.gridWidth-1) { xFloor = this.gridWidth-1; } 
+        let xPos = this.startX + this.spriteWidth  / 2 + (xFloor * this.spriteWidth) - 14;
+
+        let yFloor = Math.floor((pointer.y - this.startY) / this.spriteHeight)  
+        if(yFloor < 0) { yFloor = 0; } else if (yFloor > this.gridHeight-1) { yFloor = this.gridHeight-1; } 
+        let yPos = this.startY + this.spriteHeight / 2 + (yFloor * this.spriteHeight) - 14; //I have absolutely no idea why this -14 is necessary but it is
+
+        this.dragObject.x = xPos; this.dragObject.y = yPos;
+        //console.log(xFloor, yFloor, pointer.x, pointer.y, xPos, yPos);
+
+        //Plug it into the appropriate switch
+        this.plugInto(xFloor, yFloor, this.dragObject);
     }
 
-
-
+    reset(object){
+        object.x = object.oldX;
+        object.y = object.oldY;
+    }
+    plugInto(x, y, plug){
+        let s = this.switches[this.gridWidth * y + x];
+        if(s.occupied){
+            this.reset(plug);
+        }
+        s.occupied = true;
+        console.log(s.x, s.y);
+    }
 
     createGrid(){
         // Calculate the starting position for the grid
@@ -124,7 +150,8 @@ class OperatorScene extends Phaser.Scene {
                 const x = this.startX + (col * this.spriteWidth ) + (this.spriteWidth  - 64);
                 const y = this.startY + (row * this.spriteHeight) + (this.spriteHeight - 64);
 
-                let switchSprite = this.add.sprite(x, y, 'switchSprite');
+                let switchSprite = this.add.sprite(x, y, 'switchSprite').setOrigin(0.5, 0.5);
+                switchSprite.occupied = false;
                 this.switches.push(switchSprite);
                 //switchesGroup.add(switchSprite);
             }
