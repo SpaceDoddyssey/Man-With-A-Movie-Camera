@@ -30,30 +30,50 @@ class OperatorScene extends Phaser.Scene {
         this.spriteHeight = 100; // Height of the space given to each sprite
         this.gridWidth = 7;  // Number of switches in a row
         this.gridHeight = 5; // Number of switches in a column
+        this.totalSwitches = this.gridHeight * this.gridWidth;
 
         //Spawn grid
         this.createGrid();
 
         //Spawn plugs
-        const numPlugs = 6;
-        this.spawnPlugs(numPlugs);
+        this.numPlugs = 6;
+        this.spawnPlugs(this.numPlugs);
+
+        this.incomingCallTimer = 40;
+        this.incomingCallBaseRate = 180;
+        this.incomingCallTimeVariance = 40
+        this.numIncomingCalls = 0;
+        this.maxIncomingCalls = 5;
     }
 
     update(){
-
+        this.incomingCallTimer--;
+        if(this.incomingCallTimer <= 0){
+            let newTimer = Phaser.Math.Between(this.incomingCallBaseRate - this.incomingCallTimeVariance, this.incomingCallBaseRate + this.incomingCallTimeVariance);
+            console.log(newTimer);
+            this.incomingCallTimer = newTimer;
+            if(this.numIncomingCalls < this.maxIncomingCalls){
+                this.receiveCall();
+            }
+        }
     }
 
     receiveCall(){
         let foundOne = false;
+        let x, y, s;
         while(!foundOne){
-            let x = Phaser.Math.Between(0, this.gridWidth-1);
-            let y = Phaser.Math.Between(0, this.gridHeight-1);
-            let s = this.switches[this.gridWidth * y + x];
-            if(!s.occupied && !s.incomingCall){ foundOne = true; }
-
-            s.incomingCall = true;
-            s.setTexture('switchIncomingSprite');
+            x = Phaser.Math.Between(0, this.gridWidth-1);
+            y = Phaser.Math.Between(0, this.gridHeight-1);
+            s = this.switches[this.gridWidth * y + x];
+            if(!s.occupied && !s.incomingCall){ 
+                foundOne = true; 
+            } 
         }
+        
+        s.incomingCall = true;
+        s.setTexture('switchIncomingSprite');
+
+        this.numIncomingCalls++;
     }
 
     reset(object){
@@ -74,6 +94,16 @@ class OperatorScene extends Phaser.Scene {
         plug.switch.occupied = false;
         plug.switch = s;
         console.log(s.x, s.y);
+
+        if(s.incomingCall){
+            this.connectCall(s);
+        }
+    }
+
+    connectCall(s){
+        s.incomingCall = false;
+        this.numIncomingCalls--;
+        s.setTexture('switchSprite');
     }
 
 
