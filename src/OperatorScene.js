@@ -4,9 +4,11 @@ class OperatorScene extends Phaser.Scene {
     }
 
     preload() {
-      this.load.image('switchSprite',         'assets/switch.png')
-      this.load.image('switchIncomingSprite', 'assets/switch_incoming_call.png')
-      this.load.image('plugSprite',           'assets/plug.png')
+        this.load.path = 'assets/Operator/';
+        this.load.image('background',           'switchboardbg.png')
+        this.load.image('switchSprite',         'slot_empty.png')
+        this.load.image('switchIncomingSprite', 'slot_incoming.png')
+        this.load.image('plugSprite',           'plug_finished.png')
     }
 
     create(){
@@ -24,33 +26,40 @@ class OperatorScene extends Phaser.Scene {
         this.switches = [];
         this.plugs = [];
 
-        this.input.on('pointerdown',this.startDrag,this);
+        this.input.on('pointerdown', this.startDrag,this);
 
+        let bg = this.add.sprite(centerX, centerY, 'background');
+        bg.scale = 1.5;
+
+        //Spawn grid
         this.spriteWidth = 100;   // Width of the space given to each sprite
         this.spriteHeight = 100; // Height of the space given to each sprite
         this.gridWidth = 7;  // Number of switches in a row
         this.gridHeight = 5; // Number of switches in a column
         this.totalSwitches = this.gridHeight * this.gridWidth;
-
-        //Spawn grid
         this.createGrid();
 
         //Spawn plugs
         this.numPlugs = 6;
         this.spawnPlugs(this.numPlugs);
 
-        this.incomingCallTimer = 40;
-        this.incomingCallBaseRate = 180;
+        //Initialize incoming call variables
+        this.incomingCallTimer = 40; //Ticks left before receiving a new call
+        this.incomingCallBaseRate = 180; 
         this.incomingCallTimeVariance = 40
-        this.numIncomingCalls = 0;
-        this.maxIncomingCalls = 5;
+        this.numIncomingCalls = 0; //How many incoming calls are currently waiting
+        this.maxIncomingCalls = 5; //Max number of incoming calls that can be "in the queue"
+
+        this.score = 0;
+        this.initUI();
     }
 
     update(){
         this.incomingCallTimer--;
         if(this.incomingCallTimer <= 0){
-            let newTimer = Phaser.Math.Between(this.incomingCallBaseRate - this.incomingCallTimeVariance, this.incomingCallBaseRate + this.incomingCallTimeVariance);
-            console.log(newTimer);
+            let newTimer = Phaser.Math.Between(this.incomingCallBaseRate - this.incomingCallTimeVariance, 
+                                               this.incomingCallBaseRate + this.incomingCallTimeVariance);
+            //console.log(newTimer);
             this.incomingCallTimer = newTimer;
             if(this.numIncomingCalls < this.maxIncomingCalls){
                 this.receiveCall();
@@ -103,6 +112,8 @@ class OperatorScene extends Phaser.Scene {
     connectCall(s){
         s.incomingCall = false;
         this.numIncomingCalls--;
+        this.score++;
+        this.scoreCounter.text = 'Score: ' + this.score;
         s.setTexture('switchSprite');
     }
 
@@ -163,7 +174,7 @@ class OperatorScene extends Phaser.Scene {
     createGrid(){
         // Calculate the starting position for the grid
         this.startX = (this.cameras.main.width  - (this.spriteWidth  * this.gridWidth ) ) / 2;
-        this.startY = (this.cameras.main.height - (this.spriteHeight * this.gridHeight) ) / 2;
+        this.startY = (this.cameras.main.height - (this.spriteHeight * this.gridHeight) ) / 2 + 32;
     
         // Create a group to hold the switches
         //const switchesGroup = this.physics.add.group();
@@ -214,5 +225,28 @@ class OperatorScene extends Phaser.Scene {
             plugSprite.coords = coords;
             this.plugs.push(plugSprite);
         }
+    }
+    initUI(){
+        // Score text
+        const scoreConfig = {
+            fontFamily: 'Courier',
+            fontSize: '28px',
+            backgroundColor: '#F3B141',
+            color: '#843605',
+            align: 'left',
+            padding: {
+                top: 5,
+                bottom: 5,
+                left: 5,
+                right: 5
+            },
+            fixedWidth: 170,
+            setDepth: 0
+        }
+        const timeConfig = Object.assign({}, scoreConfig, { fixedWidth: 160 });
+
+        // With a beyond borders map, UI should be later be constantly updated at a distance away from the player rather than a constant fixed distance.
+
+        this.scoreCounter = this.add.text(0, 0, 'Score: ' + this.score, scoreConfig);
     }
 }
