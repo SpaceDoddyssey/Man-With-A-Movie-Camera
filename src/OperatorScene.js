@@ -9,6 +9,8 @@ class OperatorScene extends Phaser.Scene {
         this.load.image('switchSprite',         'slot_empty.png')
         this.load.image('switchIncomingSprite', 'slot_incoming.png')
         this.load.image('plugSprite',           'plug_finished.png')
+        this.load.image('plug_ongoing',         'plug_ongoing.png')
+        this.load.image('plug_finished',        'plug_finished.png');
     }
 
     create(){
@@ -41,17 +43,22 @@ class OperatorScene extends Phaser.Scene {
 
         //Spawn plugs
         this.numPlugs = 6;
+        this.numFreePlugs = this.numPlugs;
         this.spawnPlugs(this.numPlugs);
 
-        //Initialize incoming call variables
+        //Initialize call variables
         this.incomingCallTimer = 40; //Ticks left before receiving a new call
-        this.incomingCallBaseRate = 180; 
+        this.incomingCallBaseRate = 100; 
         this.incomingCallTimeVariance = 40
         this.numIncomingCalls = 0; //How many incoming calls are currently waiting
         this.maxIncomingCalls = 5; //Max number of incoming calls that can be "in the queue"
+        this.waitingState = 0; this.busyState = 1; this.doneState = 2; //Enums for managing state of answered calls
+        this.minCallDuration = 100;
+        this.maxCallDuration = 300;
 
         this.score = 0;
         this.initUI();
+
     }
 
     update(){
@@ -61,10 +68,19 @@ class OperatorScene extends Phaser.Scene {
                                                this.incomingCallBaseRate + this.incomingCallTimeVariance);
             //console.log(newTimer);
             this.incomingCallTimer = newTimer;
-            if(this.numIncomingCalls < this.maxIncomingCalls){
+            if(this.numIncomingCalls < this.maxIncomingCalls || this.numFreePlugs > 0){
                 this.receiveCall();
             }
         }
+
+        this.plugs.forEach(plug => {
+            if(plug.timeLeftOnCall > 0){
+                plug.timeLeftOnCall--;
+            } else if(plug.callState == this.busyState) {
+                plug.callState = this.doneState;
+                plug.setTexture('plug_finished');
+            }
+        });
     }
 
     receiveCall(){
@@ -111,6 +127,12 @@ class OperatorScene extends Phaser.Scene {
 
     connectCall(s){
         s.incomingCall = false;
+        
+        let plug = s.plug;
+        plug.callState = this.busyState;
+        plug.timeLeftOnCall = Phaser.Math.Between(this.minCallDuration, this.maxCallDuration);
+        plug.setTexture('plug_ongoing');
+
         this.numIncomingCalls--;
         this.score++;
         this.scoreCounter.text = 'Score: ' + this.score;
@@ -135,7 +157,7 @@ class OperatorScene extends Phaser.Scene {
 
     startDrag(pointer, targets){
         this.dragObject = targets[0];
-        if(this.dragObject != undefined){
+        if(this.dragObject != undefined && this.dragObject.callState != this.busyState){
             this.dragObject.oldX = this.dragObject.x;
             this.dragObject.oldY = this.dragObject.y;
             this.dragObject.isGrabbed = true;
@@ -221,6 +243,7 @@ class OperatorScene extends Phaser.Scene {
             let plugSprite = this.add.sprite(xPos, yPos, 'plugSprite').setOrigin(0.5, 0.5);
             s.plug = plugSprite;
             plugSprite.switch = s;
+            plugSprite.callState = this.waitingState;
             plugSprite.setInteractive();
             plugSprite.coords = coords;
             this.plugs.push(plugSprite);
