@@ -26,24 +26,27 @@ class Menu extends Phaser.Scene {
         this.add.text(game.config.width/2, game.config.height/2 - borderUISize * 4 - borderPadding, ' Man With A Movie Camera ', menuConfig).setOrigin(0.5);
         //let tutorialText = this.add.text(game.config.width/2, game.config.height/2 + borderUISize, 'WASD to move, click to fire', menuConfig).setOrigin(0.5);
         menuConfig.backgroundColor = '#00FF00';
-        const PlayButton = this.add.text(game.config.width/2, game.config.height/2 + borderUISize * 6, ' Operator scene ', menuConfig).setOrigin(0.5).setInteractive();
-        //-------------------------------------------
-        Ready = false; 
-        //-------------------------------------------
-        PlayButton.on('pointerdown', function (pointer)
+
+        const OperatorButton = this.add.text(game.config.width/2, game.config.height/2 + borderUISize * 6, ' Operator scene ', menuConfig).setOrigin(0.5).setInteractive();
+        OperatorButton.on('pointerdown', (pointer) =>
         {
-          this.setTint(0xff0000);
-          Ready = true;
+          this.scene.start('operatorScene');
         });
-        // define keys
-    }
+      
+        const EmergencyButton = this.add.text(game.config.width/2, game.config.height/2 + borderUISize * 2, ' Emergency scene ', menuConfig).setOrigin(0.5).setInteractive();
+        EmergencyButton.on('pointerdown', (pointer) =>
+        {
+          this.scene.start('emergencyServicesScene');
+        });
+
+        const ShootingGalleryButton = this.add.text(game.config.width/2, game.config.height/2 + borderUISize * 10, ' Shooting Gallery scene (Not Implemented) ', menuConfig).setOrigin(0.5).setInteractive();
+        ShootingGalleryButton.on('pointerdown', (pointer) =>
+        {
+          this.scene.start('shootingGalleryScene');
+        });
+
+      }
 
     update() {
-      if (Ready == true) {
-        game.settings = {
-          audioPlaying: false //change once we have music
-        }
-        this.scene.start('operatorScene');
-      }
     }
 }
