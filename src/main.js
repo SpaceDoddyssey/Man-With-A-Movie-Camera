@@ -3,12 +3,12 @@ let config = {
     width: 960,
     height: 560,
     scale: {
-        autoCenter: Phaser.Scale.CENTER_BOTH
+        autoCenter: Phaser.Scale.RESIZE
     },
     physics: {
         default: 'arcade',
         arcade: {
-            debug: true
+            debug: false
         }
     },
     scene: [ Menu, OperatorScene, ShootingGallery, EmergencyServices ]

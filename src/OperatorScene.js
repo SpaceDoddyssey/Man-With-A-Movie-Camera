@@ -53,8 +53,8 @@ class OperatorScene extends Phaser.Scene {
         this.numIncomingCalls = 0; //How many incoming calls are currently waiting
         this.maxIncomingCalls = 5; //Max number of incoming calls that can be "in the queue"
         this.waitingState = 0; this.busyState = 1; this.doneState = 2; //Enums for managing state of answered calls
-        this.minCallDuration = 100;
-        this.maxCallDuration = 300;
+        this.minCallDuration = 300;
+        this.maxCallDuration = 600;
 
         this.score = 0;
         this.initUI();
@@ -68,7 +68,7 @@ class OperatorScene extends Phaser.Scene {
                                                this.incomingCallBaseRate + this.incomingCallTimeVariance);
             //console.log(newTimer);
             this.incomingCallTimer = newTimer;
-            if(this.numIncomingCalls < this.maxIncomingCalls || this.numFreePlugs > 0){
+            if(this.numIncomingCalls < this.maxIncomingCalls && this.numFreePlugs > 0){
                 this.receiveCall();
             }
         }
