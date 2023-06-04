@@ -17,6 +17,7 @@ class EmergencyServices extends Phaser.Scene {
         this.load.path = 'assets/Emergency/';
         this.load.image('ambulance',    'ambulance.png');
         this.load.image('arrow',        'arrow.png');
+        this.load.image('objective',    'locationMarker.png');
         this.load.image('tilesetImage', 'tileset.png');
         this.load.tilemapTiledJSON('tilemapJSON', 'CityTilemap.json');
     }
@@ -28,8 +29,12 @@ class EmergencyServices extends Phaser.Scene {
       const roadLayer     = this.map.createLayer('Road', tileset, 0, 0);
       const buildingLayer = this.map.createLayer('Buildings', tileset, 0, 0);
       buildingLayer.setCollisionByProperty({ collides: true });
+
       this.objectives = this.map.getObjectLayer('Objective Layer').objects;
+      this.objectiveSprite = this.add.sprite(centerX, centerY, 'objective').setOrigin(0.5, 1);
+      this.objectiveSprite.setScale(0.3);
       this.curObjective = Phaser.Utils.Array.GetRandom(this.objectives, 0, this.objectives.length);
+      this.objectiveSprite.x = this.curObjective.x; this.objectiveSprite.y = this.curObjective.y;
       
       this.matter.world.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
       this.physics.world.bounds.setTo(0, 0, this.map.widthInPixels, this.map.heightInPixels);
@@ -44,8 +49,8 @@ class EmergencyServices extends Phaser.Scene {
       this.ambulance = this.matter.add.sprite(centerX, centerY, 'ambulance').setOrigin(0.5, 0.5);
       this.ambulanceScale = 0.5;
       this.ambulance.setScale(this.ambulanceScale);
-      this.ambulance.speed = 0.0006 * this.ambulanceScale;
-      this.ambulance.turnSpeed = 0.05;
+      this.ambulance.speed = 0.0015 * this.ambulanceScale;
+      this.ambulance.turnSpeed = 0.06;
       this.ambulance.setBounce(0);
       this.ambulance.setFrictionAir(0.2);
       this.ambulance.setFriction(0.5);
@@ -80,7 +85,6 @@ class EmergencyServices extends Phaser.Scene {
         } else {
           this.ambulance.moving = false;
         }
-        
         if (this.cursors.left.isDown && this.ambulance.moving) {
           this.ambulance.setAngularVelocity(-this.ambulance.turnSpeed);
         } else if (this.cursors.right.isDown && this.ambulance.moving) {
@@ -89,11 +93,19 @@ class EmergencyServices extends Phaser.Scene {
           this.ambulance.setAngularVelocity(0);
         }
 
+        //Check objectives
+        //console.log(Phaser.Math.Distance.Between(this.ambulance.position, this.curObjective.position))
+        if(Phaser.Math.Distance.Between(this.ambulance.x, this.ambulance.y, this.curObjective.x, this.curObjective.y) < 20){
+           this.generateObjective();
+        }
+
+        console.log('hello');
         this.arrow.update();
     }
 
-
     generateObjective(){
-
+      this.curObjective = Phaser.Utils.Array.GetRandom(this.objectives, 0, this.objectives.length);
+      this.objectiveSprite.x = this.curObjective.x; this.objectiveSprite.y = this.curObjective.y;
+      this.arrow.objective = this.curObjective;
     }
 }
