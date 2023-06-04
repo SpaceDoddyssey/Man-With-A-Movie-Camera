@@ -56,8 +56,8 @@ class EmergencyServices extends Phaser.Scene {
       this.cameras.main.startFollow(this.ambulance, true, 0.25, 0.25);
 
       
-      // this.arrow = new ObjectiveArrow(this, 0, 0, 'arrow', this.curObjective, this.ambulance).setOrigin(0.5, 0.5);
-      // this.arrow.setScrollFactor(0);
+      this.arrow = new ObjectiveArrow(this, 0, 0, 'arrow', this.curObjective, this.ambulance).setOrigin(0.5, 0.5);
+      //this.arrow.setScrollFactor(0);
 
       this.frameTime = 0;
     }
@@ -89,7 +89,7 @@ class EmergencyServices extends Phaser.Scene {
           this.ambulance.setAngularVelocity(0);
         }
 
-        //this.arrow.update();
+        this.arrow.update();
     }
 
 
