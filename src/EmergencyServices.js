@@ -47,7 +47,7 @@ class EmergencyServices extends Phaser.Scene {
           left: Phaser.Input.Keyboard.KeyCodes.A,
           right:Phaser.Input.Keyboard.KeyCodes.D });
       this.keyPause = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P)
-      keyFullscreen = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F)
+      this.keyFullscreen = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F)
 
       //Set up ambulance
       this.ambulance = this.matter.add.sprite(centerX, centerY, 'ambulance').setOrigin(0.5, 0.5);
@@ -118,9 +118,9 @@ class EmergencyServices extends Phaser.Scene {
         }
 
         if (Phaser.Input.Keyboard.JustDown(this.keyPause)) {
-          //this.scene.pause().launch('pauseScene');
+          this.scene.pause().launch('pauseScene', { sceneTitle: 'ambulanceScene' });
         }
-        if(Phaser.Input.Keyboard.JustDown(keyFullscreen)){
+        if(Phaser.Input.Keyboard.JustDown(this.keyFullscreen)){
           this.scale.toggleFullscreen();
         }
 

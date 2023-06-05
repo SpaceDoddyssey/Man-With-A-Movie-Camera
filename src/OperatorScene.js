@@ -70,8 +70,8 @@ class OperatorScene extends Phaser.Scene {
 
         this.initUI();
 
-        keyPause = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P)
-        keyFullscreen = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F)
+        this.keyPause = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P)
+        this.keyFullscreen = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F)
 
         this.scene.pause().launch('operatorTutorial');   
     }
@@ -110,10 +110,10 @@ class OperatorScene extends Phaser.Scene {
             }
         });
 
-        if (Phaser.Input.Keyboard.JustDown(keyPause)) {
-            //this.scene.pause().launch('pauseScene');
+        if (Phaser.Input.Keyboard.JustDown(this.keyPause)) {
+            this.scene.pause().launch('pauseScene', { sceneTitle: 'operatorScene' });
         }
-        if(Phaser.Input.Keyboard.JustDown(keyFullscreen)){
+        if(Phaser.Input.Keyboard.JustDown(this.keyFullscreen)){
             this.scale.toggleFullscreen();
         }
     }
