@@ -26,7 +26,7 @@ class Menu extends Phaser.Scene {
             fixedWidth: 0
         }
 
-        Music
+        // Music
         if(musicPlaying == false){
           this.music = this.sound.add('music');
           this.sound.play('music', { volume: 0.4 });
@@ -40,13 +40,13 @@ class Menu extends Phaser.Scene {
         const EmergencyButton = this.add.text(centerX, centerY - 80, ' Emergency scene ', menuConfig).setOrigin(0.5).setInteractive();
         EmergencyButton.on('pointerdown', (pointer) =>
         {
-          this.scene.start('emergencyServicesScene');
+          this.scene.stop().start('ambulanceScene');
         });
 
         const OperatorButton = this.add.text(centerX, centerY , ' Operator scene ', menuConfig).setOrigin(0.5).setInteractive();
         OperatorButton.on('pointerdown', (pointer) =>
         {
-          this.scene.start('operatorScene');
+          this.scene.stop().start('operatorScene');
         });      
 
         // const ShootingGalleryButton = this.add.text(centerX, centerY + 80, ' Shooting Gallery scene (Not Implemented) ', menuConfig).setOrigin(0.5).setInteractive();
@@ -63,8 +63,13 @@ class Menu extends Phaser.Scene {
         });
 
         score = 0;
+
+        keyFullscreen = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F)
       }
 
     update() {
+      if(Phaser.Input.Keyboard.JustDown(keyFullscreen)){
+        this.scale.toggleFullscreen();
+      }
     }
 }

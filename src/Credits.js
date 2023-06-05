@@ -27,5 +27,13 @@ class Credits extends Phaser.Scene {
         {
           this.scene.start('menuScene');
         });
+
+        keyFullscreen = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F)
+    }
+
+    update(){
+        if(Phaser.Input.Keyboard.JustDown(keyFullscreen)){
+            this.scale.toggleFullscreen();
+        }
     }
 }

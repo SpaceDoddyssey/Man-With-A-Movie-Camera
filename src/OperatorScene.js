@@ -31,7 +31,7 @@ class OperatorScene extends Phaser.Scene {
         this.input.on('pointerdown', this.startDrag,this);
 
         let bg = this.add.sprite(centerX, centerY, 'background');
-        bg.scale = 1.5;
+        bg.scale = 1.0;
 
         //Spawn grid
         this.spriteWidth = 100;   // Width of the space given to each sprite
@@ -69,6 +69,11 @@ class OperatorScene extends Phaser.Scene {
         this.secondsLeft = 40;
 
         this.initUI();
+
+        keyPause = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P)
+        keyFullscreen = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F)
+
+        this.scene.pause().launch('operatorTutorial');   
     }
 
     update(time, delta){
@@ -104,6 +109,13 @@ class OperatorScene extends Phaser.Scene {
                 plug.setTexture('plug_finished');
             }
         });
+
+        if (Phaser.Input.Keyboard.JustDown(keyPause)) {
+            //this.scene.pause().launch('pauseScene');
+        }
+        if(Phaser.Input.Keyboard.JustDown(keyFullscreen)){
+            this.scale.toggleFullscreen();
+        }
     }
 
     receiveCall(){

@@ -1,7 +1,7 @@
 class EmergencyServices extends Phaser.Scene {
     constructor() {
         super({
-            key: 'emergencyServicesScene',
+            key: 'ambulanceScene',
             physics: {
             matter: {
                 debug: false,
@@ -46,6 +46,8 @@ class EmergencyServices extends Phaser.Scene {
           down: Phaser.Input.Keyboard.KeyCodes.S,
           left: Phaser.Input.Keyboard.KeyCodes.A,
           right:Phaser.Input.Keyboard.KeyCodes.D });
+      this.keyPause = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P)
+      keyFullscreen = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F)
 
       //Set up ambulance
       this.ambulance = this.matter.add.sprite(centerX, centerY, 'ambulance').setOrigin(0.5, 0.5);
@@ -78,6 +80,8 @@ class EmergencyServices extends Phaser.Scene {
       this.timeCounter  = this.add.text(this.cameras.main.worldView.x + this.cameras.main.worldView.width - 80,
                                         this.cameras.main.worldView.y, 
                                         'Time: ' + this.secondsLeft, EmergTimeConfig).setDepth(6);
+
+      this.scene.pause().launch('emergTutorial');                
     }
 
     update(time, delta){
@@ -111,6 +115,13 @@ class EmergencyServices extends Phaser.Scene {
           this.ambulance.setAngularVelocity(this.ambulance.turnSpeed);
         } else {
           this.ambulance.setAngularVelocity(0);
+        }
+
+        if (Phaser.Input.Keyboard.JustDown(this.keyPause)) {
+          //this.scene.pause().launch('pauseScene');
+        }
+        if(Phaser.Input.Keyboard.JustDown(keyFullscreen)){
+          this.scale.toggleFullscreen();
         }
 
         //Check objectives

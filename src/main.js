@@ -3,6 +3,7 @@ let config = {
     width: 960,
     height: 560,
     scale: {
+        mode: Phaser.Scale.FIT, 
         autoCenter: Phaser.Scale.RESIZE
     },
     physics: {
@@ -11,7 +12,7 @@ let config = {
             debug: false
         }
     },
-    scene: [ Menu, OperatorScene, ShootingGallery, EmergencyServices, Credits ]
+    scene: [ Menu, OperatorScene, ShootingGallery, EmergencyServices, Credits, Pause, EmergTutorial, OpTutorial ]
 }
 
 
@@ -28,7 +29,7 @@ let centerY = game.config.height/2;
 
 let PlayButton, Ready;
 
-let keyUP, keyLEFT, keyDOWN, keyRIGHT, keyESC;
+let keyESC, keyPause, keyFullscreen;
 
 let musicPlaying = false;
 
