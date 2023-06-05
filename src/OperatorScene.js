@@ -59,6 +59,10 @@ class OperatorScene extends Phaser.Scene {
         this.score = 0;
         this.initUI();
 
+        this.ringTones = [];
+        this.ringTones.push(this.sound.add('ring1', { volume: 0.06 }));
+        this.ringTones.push(this.sound.add('ring2', { volume: 0.03 }));
+        this.ringTones.push(this.sound.add('ring3', { volume: 0.05 }));
     }
 
     update(){
@@ -84,6 +88,7 @@ class OperatorScene extends Phaser.Scene {
     }
 
     receiveCall(){
+        //Searches for a valid slot to send the incoming call to
         let foundOne = false;
         let x, y, s;
         while(!foundOne){
@@ -95,6 +100,9 @@ class OperatorScene extends Phaser.Scene {
             } 
         }
         
+        s.ringTone = Phaser.Utils.Array.GetRandom(this.ringTones, 0, this.ringTones.length);
+        s.ringTone.play();
+
         s.incomingCall = true;
         s.setTexture('switchIncomingSprite');
 
@@ -108,7 +116,7 @@ class OperatorScene extends Phaser.Scene {
 
     plugInto(x, y, plug){
         let s = this.switches[this.gridWidth * y + x];
-        console.log(x, y, plug.switch.x, plug.switch.y, plug.switch.occupied, s.occupied);
+        //console.log(x, y, plug.switch.x, plug.switch.y, plug.switch.occupied, s.occupied);
         if(s.occupied){
             this.reset(plug);
             return;
@@ -118,7 +126,7 @@ class OperatorScene extends Phaser.Scene {
         s.plug = plug;
         plug.switch.occupied = false;
         plug.switch = s;
-        console.log(s.x, s.y);
+        //console.log(s.x, s.y);
 
         if(s.incomingCall){
             this.connectCall(s);
@@ -127,7 +135,8 @@ class OperatorScene extends Phaser.Scene {
 
     connectCall(s){
         s.incomingCall = false;
-        
+        s.ringTone.stop();
+
         let plug = s.plug;
         plug.callState = this.busyState;
         plug.timeLeftOnCall = Phaser.Math.Between(this.minCallDuration, this.maxCallDuration);

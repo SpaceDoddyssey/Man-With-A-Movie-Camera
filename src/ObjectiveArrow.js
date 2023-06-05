@@ -10,6 +10,7 @@ class ObjectiveArrow extends Phaser.GameObjects.Sprite {
         this.distanceFromPlayer = 36; 
         this.minDistToRender = 70;
         this.playerSprite = playerSprite; //Set by Play
+        this.setDepth(10);
     }
 
     update() {

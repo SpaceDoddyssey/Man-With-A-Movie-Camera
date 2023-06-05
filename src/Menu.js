@@ -4,7 +4,11 @@ class Menu extends Phaser.Scene {
     }
 
     preload() {
-      
+      this.load.path = 'assets/Sounds/';
+      this.load.audio('music', '1st Contact - The Long Let Go.mp3');
+      this.load.audio('ring1', 'Ring1.wav');
+      this.load.audio('ring2', 'Ring2.wav');
+      this.load.audio('ring3', 'Ring3.mp3');
     }
 
     create() {
@@ -22,9 +26,15 @@ class Menu extends Phaser.Scene {
             fixedWidth: 0
         }
 
+        //Music
+        if(musicPlaying == false){
+          this.music = this.sound.add('music');
+          this.sound.play('music', { volume: 0.4 });
+        }
+        musicPlaying = true;
+
         // show menu text
         this.add.text(centerX, centerY - 160, ' Man With A Movie Camera ', menuConfig).setOrigin(0.5);
-        this.add.text(centerX, centerY + 180, ' Cameron Dodd: \n Programming (Ambulance/Phone Operator scenes) \n Miles Anderson: \n Programming (Shooting Gallery scene), Art ', menuConfig).setOrigin(0.5);
         menuConfig.backgroundColor = '#00FF00';
 
         const EmergencyButton = this.add.text(centerX, centerY - 80, ' Emergency scene ', menuConfig).setOrigin(0.5).setInteractive();
@@ -39,10 +49,17 @@ class Menu extends Phaser.Scene {
           this.scene.start('operatorScene');
         });      
 
-        const ShootingGalleryButton = this.add.text(centerX, centerY + 80, ' Shooting Gallery scene (Not Implemented) ', menuConfig).setOrigin(0.5).setInteractive();
-        ShootingGalleryButton.on('pointerdown', (pointer) =>
+        // const ShootingGalleryButton = this.add.text(centerX, centerY + 80, ' Shooting Gallery scene (Not Implemented) ', menuConfig).setOrigin(0.5).setInteractive();
+        // ShootingGalleryButton.on('pointerdown', (pointer) =>
+        // {
+        //   this.scene.start('shootingGalleryScene');
+        // });
+
+        menuConfig.backgroundColor = '#1111AA';
+        const CreditsButton = this.add.text(centerX, centerY + 160, ' Credits ', menuConfig).setOrigin(0.5).setInteractive();
+        CreditsButton.on('pointerdown', (pointer) =>
         {
-          this.scene.start('shootingGalleryScene');
+          this.scene.start('creditsScene');
         });
       }
 

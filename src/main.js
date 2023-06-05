@@ -11,7 +11,7 @@ let config = {
             debug: false
         }
     },
-    scene: [ Menu, OperatorScene, ShootingGallery, EmergencyServices ]
+    scene: [ Menu, OperatorScene, ShootingGallery, EmergencyServices, Credits ]
 }
 
 
@@ -29,3 +29,5 @@ let centerY = game.config.height/2;
 let PlayButton, Ready;
 
 let keyUP, keyLEFT, keyDOWN, keyRIGHT, keyESC;
+
+let musicPlaying = false;
