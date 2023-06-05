@@ -175,7 +175,6 @@ class OperatorScene extends Phaser.Scene {
 
         this.numIncomingCalls--;
         score++;
-        score += 5;
         this.scoreCounter.text = 'Score: ' + score;
         s.setTexture('switchSprite');
     }
