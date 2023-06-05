@@ -26,7 +26,7 @@ class Menu extends Phaser.Scene {
             fixedWidth: 0
         }
 
-        //Music
+        Music
         if(musicPlaying == false){
           this.music = this.sound.add('music');
           this.sound.play('music', { volume: 0.4 });
@@ -61,6 +61,8 @@ class Menu extends Phaser.Scene {
         {
           this.scene.start('creditsScene');
         });
+
+        score = 0;
       }
 
     update() {

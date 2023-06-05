@@ -4,7 +4,7 @@ class EmergencyServices extends Phaser.Scene {
             key: 'emergencyServicesScene',
             physics: {
             matter: {
-                debug: true,
+                debug: false,
                 gravity: { y: 0 },
                 //debugShowBody: true,
                 debugBodyColor: 0x0000ff
@@ -67,6 +67,17 @@ class EmergencyServices extends Phaser.Scene {
       //this.arrow.setScrollFactor(0);
 
       this.frameTime = 0;
+      
+      this.timeLeft = 40000.0;
+      this.secondsLeft = 40;
+
+      // UI text
+      this.scoreCounter = this.add.text(this.cameras.main.worldView.x, 
+                                        this.cameras.main.worldView.y, 
+                                        'Score: ' + score, EmergScoreConfig).setDepth(6);
+      this.timeCounter  = this.add.text(this.cameras.main.worldView.x + this.cameras.main.worldView.width - 80,
+                                        this.cameras.main.worldView.y, 
+                                        'Time: ' + this.secondsLeft, EmergTimeConfig).setDepth(6);
     }
 
     update(time, delta){
@@ -76,8 +87,14 @@ class EmergencyServices extends Phaser.Scene {
             return;
         }
         this.frameTime = 0;
+        this.timeLeft -= delta; 
+        if(this.timeLeft / 1000.0 < this.secondsLeft){ 
+          this.secondsLeft = Math.trunc(this.timeLeft / 1000.0);
+          this.timeCounter.text = 'Time: ' + this.secondsLeft; 
+        }
 
         //Handle ambulance movement
+        
         if (this.cursors.up.isDown) {
           this.ambulance.thrust(this.ambulance.speed);
           this.ambulance.moving = true;
@@ -87,6 +104,7 @@ class EmergencyServices extends Phaser.Scene {
         } else {
           this.ambulance.moving = false;
         }
+
         if (this.cursors.left.isDown && this.ambulance.moving) {
           this.ambulance.setAngularVelocity(-this.ambulance.turnSpeed);
         } else if (this.cursors.right.isDown && this.ambulance.moving) {
@@ -98,16 +116,35 @@ class EmergencyServices extends Phaser.Scene {
         //Check objectives
         //console.log(Phaser.Math.Distance.Between(this.ambulance.position, this.curObjective.position))
         if(Phaser.Math.Distance.Between(this.ambulance.x, this.ambulance.y, this.curObjective.x, this.curObjective.y) < 20){
-           this.generateObjective();
+          score += 5;
+          this.scoreCounter.text = 'Score: ' + score;
+          this.generateObjective();
         }
 
-        console.log('hello');
         this.arrow.update();
+
+        this.uiUpdate();
+
+        if(this.timeLeft <= 0){
+          this.scene.stop().start('operatorScene');
+        }
     }
 
     generateObjective(){
-      this.curObjective = Phaser.Utils.Array.GetRandom(this.objectives, 0, this.objectives.length);
+      const curObj = this.curObjective;
+      while(curObj == this.curObjective){
+        this.curObjective = Phaser.Utils.Array.GetRandom(this.objectives, 0, this.objectives.length);
+      }
       this.objectiveSprite.x = this.curObjective.x; this.objectiveSprite.y = this.curObjective.y;
       this.arrow.objective = this.curObjective;
     }
+
+    uiUpdate() {
+      this.scoreCounter.x = this.cameras.main.worldView.x;
+      this.scoreCounter.y = this.cameras.main.worldView.y;
+
+      this.timeCounter.x = this.cameras.main.worldView.x + this.cameras.main.worldView.width - EmergTimeConfig.fixedWidth;
+      this.timeCounter.y = this.cameras.main.worldView.y;
+  }
 }
+

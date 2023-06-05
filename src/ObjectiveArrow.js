@@ -3,7 +3,7 @@ class ObjectiveArrow extends Phaser.GameObjects.Sprite {
         super(scene, x, y, texture);
         scene.add.existing(this);
         this.scene = scene;
-        this.scale = 0.5;
+        this.scale = 0.3;
 
         this.objective = objective;
 

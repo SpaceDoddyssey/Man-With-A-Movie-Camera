@@ -57,15 +57,34 @@ class OperatorScene extends Phaser.Scene {
         this.maxCallDuration = 600;
 
         this.score = 0;
-        this.initUI();
 
         this.ringTones = [];
         this.ringTones.push(this.sound.add('ring1', { volume: 0.06 }));
         this.ringTones.push(this.sound.add('ring2', { volume: 0.03 }));
         this.ringTones.push(this.sound.add('ring3', { volume: 0.05 }));
+        
+        this.frameTime = 0;
+
+        this.timeLeft = 40000.0;
+        this.secondsLeft = 40;
+
+        this.initUI();
     }
 
-    update(){
+    update(time, delta){
+        //This code limits the update rate to 60/s
+        this.frameTime += delta;
+        if(this.frameTime < 16.5){
+            return;
+        }
+        this.frameTime = 0;
+        this.timeLeft -= delta; 
+        if(this.timeLeft / 1000.0 < this.secondsLeft){ 
+            this.secondsLeft = Math.trunc(this.timeLeft / 1000.0); 
+            this.timeCounter.text = 'Time: ' + this.secondsLeft;
+        }
+        
+        
         this.incomingCallTimer--;
         if(this.incomingCallTimer <= 0){
             let newTimer = Phaser.Math.Between(this.incomingCallBaseRate - this.incomingCallTimeVariance, 
@@ -143,8 +162,9 @@ class OperatorScene extends Phaser.Scene {
         plug.setTexture('plug_ongoing');
 
         this.numIncomingCalls--;
-        this.score++;
-        this.scoreCounter.text = 'Score: ' + this.score;
+        score++;
+        score += 5;
+        this.scoreCounter.text = 'Score: ' + score;
         s.setTexture('switchSprite');
     }
 
@@ -259,26 +279,8 @@ class OperatorScene extends Phaser.Scene {
         }
     }
     initUI(){
-        // Score text
-        const scoreConfig = {
-            fontFamily: 'Courier',
-            fontSize: '28px',
-            backgroundColor: '#F3B141',
-            color: '#843605',
-            align: 'left',
-            padding: {
-                top: 5,
-                bottom: 5,
-                left: 5,
-                right: 5
-            },
-            fixedWidth: 170,
-            setDepth: 0
-        }
-        const timeConfig = Object.assign({}, scoreConfig, { fixedWidth: 160 });
-
-        // With a beyond borders map, UI should be later be constantly updated at a distance away from the player rather than a constant fixed distance.
-
-        this.scoreCounter = this.add.text(0, 0, 'Score: ' + this.score, scoreConfig);
+    // UI text
+        this.scoreCounter = this.add.text(0, 0, 'Score: ' + score, OperScoreConfig).setDepth(6);
+        this.timeCounter  = this.add.text(0 + game.config.width - OperTimeConfig.fixedWidth, 0, 'Time: ' + this.secondsLeft, OperTimeConfig).setDepth(6);
     }
 }
