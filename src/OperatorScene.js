@@ -65,8 +65,8 @@ class OperatorScene extends Phaser.Scene {
         
         this.frameTime = 0;
 
-        this.timeLeft = 40000.0;
-        this.secondsLeft = 40;
+        this.timeLeft = 60000.0;
+        this.secondsLeft = Math.trunc(this.timeLeft / 1000);
 
         this.initUI();
 
@@ -87,6 +87,9 @@ class OperatorScene extends Phaser.Scene {
         if(this.timeLeft / 1000.0 < this.secondsLeft){ 
             this.secondsLeft = Math.trunc(this.timeLeft / 1000.0); 
             this.timeCounter.text = 'Time: ' + this.secondsLeft;
+        }
+        if(this.timeLeft <= 0){
+            this.scene.start("gameOverScene");
         }
         
         

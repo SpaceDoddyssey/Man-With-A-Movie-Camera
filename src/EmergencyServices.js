@@ -70,8 +70,8 @@ class EmergencyServices extends Phaser.Scene {
 
       this.frameTime = 0;
       
-      this.timeLeft = 40000.0;
-      this.secondsLeft = 40;
+      this.timeLeft = 60000.0;
+      this.secondsLeft = Math.trunc(this.timeLeft / 1000);
 
       // UI text
       this.scoreCounter = this.add.text(this.cameras.main.worldView.x, 

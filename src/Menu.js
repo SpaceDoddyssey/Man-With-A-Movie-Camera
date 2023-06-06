@@ -37,17 +37,17 @@ class Menu extends Phaser.Scene {
         this.add.text(centerX, centerY - 160, ' Man With A Movie Camera ', menuConfig).setOrigin(0.5);
         menuConfig.backgroundColor = '#00FF00';
 
-        const EmergencyButton = this.add.text(centerX, centerY - 80, ' Emergency scene ', menuConfig).setOrigin(0.5).setInteractive();
+        const EmergencyButton = this.add.text(centerX, centerY - 80, ' Begin ', menuConfig).setOrigin(0.5).setInteractive();
         EmergencyButton.on('pointerdown', (pointer) =>
         {
           this.scene.stop().start('ambulanceScene');
         });
 
-        const OperatorButton = this.add.text(centerX, centerY , ' Operator scene ', menuConfig).setOrigin(0.5).setInteractive();
-        OperatorButton.on('pointerdown', (pointer) =>
-        {
-          this.scene.stop().start('operatorScene');
-        });      
+        // const OperatorButton = this.add.text(centerX, centerY , ' Operator scene ', menuConfig).setOrigin(0.5).setInteractive();
+        // OperatorButton.on('pointerdown', (pointer) =>
+        // {
+        //   this.scene.stop().start('operatorScene');
+        // });      
 
         // const ShootingGalleryButton = this.add.text(centerX, centerY + 80, ' Shooting Gallery scene (Not Implemented) ', menuConfig).setOrigin(0.5).setInteractive();
         // ShootingGalleryButton.on('pointerdown', (pointer) =>

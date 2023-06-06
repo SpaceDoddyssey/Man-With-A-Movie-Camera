@@ -12,7 +12,7 @@ let config = {
             debug: false
         }
     },
-    scene: [ Menu, OperatorScene, ShootingGallery, EmergencyServices, Credits, Pause, EmergTutorial, OpTutorial ]
+    scene: [ Menu, OperatorScene, ShootingGallery, EmergencyServices, Credits, Pause, EmergTutorial, OpTutorial, GameOver ]
 }
 
 
@@ -34,6 +34,8 @@ let keyESC, keyPause, keyFullscreen;
 let musicPlaying = false;
 
 let score = 0;
+let highScore = 0;
+let newHighScore = false;
 
 const EmergScoreConfig = {
     fontFamily: 'American Typewriter',
