@@ -11,7 +11,7 @@ class OpTutorial extends Phaser.Scene {
             color: '#843605',
             align: 'center'
         }
-        let tutText = this.add.text(centerX, centerY, " Incoming calls will light up red \n Click and drag plugs to answer the calls \n Busy switches will be yellow \n They will turn green when the call is done \n Answer as many calls as you can ", TutStyle).setOrigin(0.5);
+        let tutText = this.add.text(centerX, centerY, " Incoming calls will light up red \n Click and drag plugs to answer the calls \n Busy plugs will be yellow \n They will turn green when the call is done \n Answer as many calls as you can ", TutStyle).setOrigin(0.5);
 
         let playButton = new Button(centerX, centerY + 100, 'Begin', this, () => {
             // .resume will start the update loop of the target scene again
