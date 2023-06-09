@@ -9,9 +9,9 @@ class EmergTutorial extends Phaser.Scene {
             fontSize: '28px',
             backgroundColor: '#F3B141',
             color: '#843605',
-            align: 'left'
+            align: 'center'
         }
-        let tutText = this.add.text(centerX, centerY, " Use WASD to move the ambulance \n Reach as many objectives as you can ", TutStyle).setOrigin(0.5);
+        let tutText = this.add.text(centerX, centerY, " Use W/S to move forward/back \n A/D turn left and right \n Reach as many objectives as you can ", TutStyle).setOrigin(0.5);
 
         let playButton = new Button(centerX, centerY + 100, 'Begin', this, () => {
             // .resume will start the update loop of the target scene again

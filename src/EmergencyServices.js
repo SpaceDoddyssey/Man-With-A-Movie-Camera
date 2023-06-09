@@ -17,7 +17,7 @@ class EmergencyServices extends Phaser.Scene {
         this.load.path = 'assets/Emergency/';
         this.load.image('ambulance',    'ambulance.png');
         this.load.image('arrow',        'arrow.png');
-        this.load.image('objective',    'locationMarker.png');
+        this.load.image('objective',    'ObjectiveSprite.png');
         this.load.image('tilesetImage', 'tileset.png');
         this.load.tilemapTiledJSON('tilemapJSON', 'CityTilemap.json');
     }
@@ -34,7 +34,7 @@ class EmergencyServices extends Phaser.Scene {
 
       this.objectives = this.map.getObjectLayer('Objective Layer').objects;
       this.objectiveSprite = this.add.sprite(centerX, centerY, 'objective').setOrigin(0.5, 1);
-      this.objectiveSprite.setScale(0.3);
+      this.objectiveSprite.setScale(0.5);
       this.curObjective = Phaser.Utils.Array.GetRandom(this.objectives, 0, this.objectives.length);
       this.objectiveSprite.x = this.curObjective.x; this.objectiveSprite.y = this.curObjective.y;
       
