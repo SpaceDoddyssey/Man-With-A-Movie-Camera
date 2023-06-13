@@ -1,3 +1,16 @@
+//Man With A Movie Camera
+
+//Team members: 
+// - Cameron Dodd
+// - Miles Anderson
+
+//Phaser components:
+// - Physics
+// - Camera
+// - Text objects
+// - Tween manager
+// - Tilemap
+
 let config = {
     type: Phaser.CANVAS,
     width: 960,
@@ -13,7 +26,7 @@ let config = {
         }
     },
     scene: [ Menu, OperatorScene, ShootingGallery, EmergencyServices, 
-             Credits, Pause, EmergTutorial, OpTutorial, GameOver, HUDScene ]
+             Credits, Pause, EmergTutorial, OpTutorial, ShootingTutorial, GameOver, HUDScene ]
 }
 
 
@@ -35,7 +48,7 @@ let score = 0;
 let highScore = 0;
 
 //Timer stuff
-let secondsPerGame = 10;
+let secondsPerGame = 40;
 let timeLeft; 
 let secondsLeft = secondsPerGame;
 let newHighScore = false;

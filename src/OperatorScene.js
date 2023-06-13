@@ -18,7 +18,7 @@ class OperatorScene extends Phaser.Scene {
         const config = {
             default: 'matter',
             matter: {
-                debug: true
+                debug: false
             }
         };
         // this.physics.world.enable(this, config);
@@ -71,7 +71,7 @@ class OperatorScene extends Phaser.Scene {
         this.keyPause = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P)
         this.keyFullscreen = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F)
 
-        this.scene.pause().launch('operatorTutorial');   
+        this.scene.pause();
     }
 
     update(time, delta){

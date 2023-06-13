@@ -46,17 +46,17 @@ class Menu extends Phaser.Scene {
 
         const EmergencyButton = new Button(centerX, centerY-80, ' Scene 1: Ambulance ', this, () => {
           this.scene.start('hudScene');
-          this.scene.stop().start('ambulanceScene');
+          this.scene.launch('ambulanceScene').launch('emergTutorial');
         }, menuConfig);
 
         const OperatorButton = new Button(centerX, centerY, ' Scene 2: Operator ', this, () => {
           this.scene.start('hudScene');
-          this.scene.stop().start('operatorScene');
+          this.scene.launch('operatorScene').launch('operatorTutorial');
         }, menuConfig);
 
         const ShootingGalleryButton = new Button(centerX, centerY + 80, ' Scene 3: Shooting Gallery ', this, () => {
           this.scene.start('hudScene');
-          this.scene.stop().start('shootingGalleryScene');
+          this.scene.stop().launch('shootingGalleryScene').launch('shootingTutorial');
         }, menuConfig);
 
         menuConfig.backgroundColor = '#1111AA';
