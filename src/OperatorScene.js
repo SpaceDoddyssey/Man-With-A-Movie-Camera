@@ -65,10 +65,9 @@ class OperatorScene extends Phaser.Scene {
         
         this.frameTime = 0;
 
-        this.timeLeft = 60000.0;
-        this.secondsLeft = Math.trunc(this.timeLeft / 1000);
-
-        this.initUI();
+        timeLeft = secondsPerGame * 1000.0;
+        secondsLeft = secondsPerGame;
+        timeCounter.setText("Time: " + secondsPerGame);
 
         this.keyPause = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P)
         this.keyFullscreen = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F)
@@ -82,14 +81,16 @@ class OperatorScene extends Phaser.Scene {
         if(this.frameTime < 16.5){
             return;
         }
+        timeLeft -= this.frameTime;
         this.frameTime = 0;
-        this.timeLeft -= delta; 
-        if(this.timeLeft / 1000.0 < this.secondsLeft){ 
-            this.secondsLeft = Math.trunc(this.timeLeft / 1000.0); 
-            this.timeCounter.text = 'Time: ' + this.secondsLeft;
+        
+        if(timeLeft / 1000.0 < secondsLeft){ 
+            secondsLeft = Math.trunc(timeLeft / 1000.0);
+            timeCounter.setText("Time: " + secondsLeft);
         }
-        if(this.timeLeft <= 0){
-            this.scene.start("gameOverScene");
+        
+        if(timeLeft <= 0){
+            this.scene.start("shootingGalleryScene");
         }
         
         
@@ -178,7 +179,6 @@ class OperatorScene extends Phaser.Scene {
 
         this.numIncomingCalls--;
         score++;
-        this.scoreCounter.text = 'Score: ' + score;
         s.setTexture('switchSprite');
     }
 
@@ -291,10 +291,5 @@ class OperatorScene extends Phaser.Scene {
             plugSprite.coords = coords;
             this.plugs.push(plugSprite);
         }
-    }
-    initUI(){
-    // UI text
-        this.scoreCounter = this.add.text(0, 0, 'Score: ' + score, OperScoreConfig).setDepth(6);
-        this.timeCounter  = this.add.text(0 + game.config.width - OperTimeConfig.fixedWidth, 0, 'Time: ' + this.secondsLeft, OperTimeConfig).setDepth(6);
     }
 }

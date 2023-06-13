@@ -8,36 +8,40 @@ class ShootingGallery extends Phaser.Scene {
     }
 
     create(){
-        // Create player
-        this.player = this.physics.add.sprite(400, 500, 'player');
-
         // Create enemies
         this.enemies = this.physics.add.group();
         this.createEnemies();
+
+        this.rifleFX = this.sound.add('airRifle', { volume: 1 })
 
         // Set up mouse click event
         this.input.on('pointerdown', this.shoot, this);
     }
 
-    shoot(){
+    shoot(pointer){
+        this.rifleFX.play();
+        console.log(pointer.x, pointer.y);
+    }
+
+    update(){
 
     }
 
     createEnemies() {
-        // Enemy 1: Moves up and down
-        const enemy1 = this.enemies.create(Phaser.Math.Between(50, 750), 50, 'enemy1');
+        // enemySlot 1: Moves up and down
+        const enemySlot1 = this.enemies.create(Phaser.Math.Between(50, 750), 50, 'enemySlot1');
         this.tweens.add({
-            targets: enemy1,
+            targets: enemySlot1,
             y: 550,
             duration: 2000,
             yoyo: true,
             repeat: -1
         });
 
-        // Enemy 2: Moves across the screen in a sine wave pattern
-        const enemy2 = this.enemies.create(50, 150, 'enemy2');
+        // enemySlot 2: Moves across the screen in a sine wave pattern
+        const enemySlot2 = this.enemies.create(50, 150, 'enemySlot2');
         this.tweens.add({
-            targets: enemy2,
+            targets: enemySlot2,
             x: 750,
             duration: 3000,
             yoyo: true,
@@ -45,13 +49,7 @@ class ShootingGallery extends Phaser.Scene {
             ease: 'Sine.easeInOut'
         });
 
-        // Enemy 3: Moves up and stops at y = 300
-        const enemy3 = this.enemies.create(750, 300, 'enemy3');
-        this.tweens.add({
-            targets: enemy3,
-            y: 300,
-            duration: 2000,
-            repeat: 0
-        });
-        }
+        // enemySlots 3-6: Stationary targets
+        const enemySlot3 = this.enemies.create(750, 300, 'enemySlot3');
+    }
 }

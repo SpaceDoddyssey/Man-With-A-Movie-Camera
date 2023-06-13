@@ -13,16 +13,15 @@ class EmergTutorial extends Phaser.Scene {
         }
         let tutText = this.add.text(centerX, centerY, " Use W/S to move forward/back \n A/D turn left and right \n Reach as many objectives as you can ", TutStyle).setOrigin(0.5);
 
+        let menuButton = new Button(centerX, centerY - 100, 'Return to Menu', this, () => {
+            // .stop will shutdown this scene, clear its display list, timers, etc.
+            this.scene.start('menuScene').stop();
+        })
+
         let playButton = new Button(centerX, centerY + 100, 'Begin', this, () => {
             // .resume will start the update loop of the target scene again
             // .stop will shutdown this scene, clear its display list, timers, etc.
             this.scene.resume('ambulanceScene').stop();
-        })
-
-        let menuButton = new Button(centerX, centerY - 100, 'Return to Menu', this, () => {
-            // .resume will start the update loop of the target scene again
-            // .stop will shutdown this scene, clear its display list, timers, etc.
-            this.scene.start('menuScene').stop();
         })
 
         // input

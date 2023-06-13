@@ -12,14 +12,12 @@ let config = {
             debug: false
         }
     },
-    scene: [ Menu, OperatorScene, ShootingGallery, EmergencyServices, Credits, Pause, EmergTutorial, OpTutorial, GameOver ]
+    scene: [ Menu, OperatorScene, ShootingGallery, EmergencyServices, 
+             Credits, Pause, EmergTutorial, OpTutorial, GameOver, HUDScene ]
 }
 
 
-
 let game = new Phaser.Game(config);
-
-// set UI
 
 let borderUISize = game.config.height / 35;
 let borderPadding = borderUISize / 10;
@@ -35,11 +33,20 @@ let musicPlaying = false;
 
 let score = 0;
 let highScore = 0;
+
+//Timer stuff
+let secondsPerGame = 10;
+let timeLeft; 
+let secondsLeft = secondsPerGame;
 let newHighScore = false;
 
-const EmergScoreConfig = {
+//Global pointers to the HUD counters
+let scoreCounter, timeCounter;
+
+//Text configs
+const ScoreConfig = {
     fontFamily: 'American Typewriter',
-    fontSize: '14px',
+    fontSize: '28px',
     backgroundColor: '#F3B141',
     color: '#843605',
     align: 'left',
@@ -49,10 +56,8 @@ const EmergScoreConfig = {
         left: 5,
         right: 5
     },
-    fixedWidth: 70,
-    setDepth: 0,
-    resolution: 128
-  }
-const EmergTimeConfig = Object.assign({}, EmergScoreConfig, { fixedWidth: 60 });
-const OperScoreConfig = Object.assign({}, EmergScoreConfig, { fixedWidth: 140, fontSize: '28px'});
-const OperTimeConfig  = Object.assign({}, OperScoreConfig,  { fixedWidth: 120 });
+    fixedWidth: 140,
+    setDepth: 0
+}
+
+const TimeConfig = Object.assign({}, ScoreConfig, { fixedWidth: 120 });

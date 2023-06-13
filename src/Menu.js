@@ -9,6 +9,7 @@ class Menu extends Phaser.Scene {
       this.load.audio('ring1', 'Sounds/Ring1.wav');
       this.load.audio('ring2', 'Sounds/Ring2.wav');
       this.load.audio('ring3', 'Sounds/Ring3.mp3');
+      this.load.audio('airRifle', 'Sounds/AirRifle.mp3')
 
       this.load.image('bgImage', 'MenuBG.png');
     }
@@ -44,14 +45,17 @@ class Menu extends Phaser.Scene {
         menuConfig.fontSize = '28px'
 
         const EmergencyButton = new Button(centerX, centerY-80, ' Scene 1: Ambulance ', this, () => {
+          this.scene.start('hudScene');
           this.scene.stop().start('ambulanceScene');
         }, menuConfig);
 
         const OperatorButton = new Button(centerX, centerY, ' Scene 2: Operator ', this, () => {
+          this.scene.start('hudScene');
           this.scene.stop().start('operatorScene');
         }, menuConfig);
 
         const ShootingGalleryButton = new Button(centerX, centerY + 80, ' Scene 3: Shooting Gallery ', this, () => {
+          this.scene.start('hudScene');
           this.scene.stop().start('shootingGalleryScene');
         }, menuConfig);
 
@@ -60,13 +64,6 @@ class Menu extends Phaser.Scene {
         const CreditsButton = new Button(centerX, centerY + 160, ' Credits ', this, () => {
           this.scene.stop().start('creditsScene');
         }, menuConfig);
-
-
-        // const CreditsButton = this.add.text(centerX, centerY + 160, ' Credits ', menuConfig).setOrigin(0.5).setInteractive();
-        // CreditsButton.on('pointerdown', (pointer) =>
-        // {
-        //   this.scene.start('creditsScene');
-        // });
 
         score = 0;
 
