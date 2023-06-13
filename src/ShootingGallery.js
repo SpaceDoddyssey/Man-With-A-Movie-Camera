@@ -8,6 +8,8 @@ class ShootingGallery extends Phaser.Scene {
     }
 
     create(){
+        // Initialize list of enemy sprites
+
         // Create enemies
         this.enemies = this.physics.add.group();
         this.createEnemies();
@@ -16,6 +18,18 @@ class ShootingGallery extends Phaser.Scene {
 
         // Set up mouse click event
         this.input.on('pointerdown', this.shoot, this);
+
+        //Start timer
+        this.frameTime = 0;
+        timeLeft = secondsPerGame * 1000.0;
+        secondsLeft = secondsPerGame;
+        timeCounter.setText("Time: " + secondsPerGame);
+
+        //I really don't know why but having a universal key variable didn't work, I have to set it at the start of each scene :|
+        this.keyPause = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P)
+        this.keyFullscreen = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F)
+
+        //this.scene.pause().launch('shootingTutorial'); //Doesn't exist yet  
     }
 
     shoot(pointer){
@@ -23,8 +37,31 @@ class ShootingGallery extends Phaser.Scene {
         console.log(pointer.x, pointer.y);
     }
 
-    update(){
+    update(time, delta){
+        //This code limits the update rate to 60/s
+        this.frameTime += delta;
+        if(this.frameTime < 16.5){
+            return;
+        }
+        timeLeft -= this.frameTime;
+        this.frameTime = 0;
+        
+        if(timeLeft / 1000.0 < secondsLeft){ 
+            secondsLeft = Math.trunc(timeLeft / 1000.0);
+            timeCounter.setText("Time: " + secondsLeft);
+        }
+        
+        if(timeLeft <= 0){
+            this.scene.start("gameOverScene");
+        }
 
+        //Handle pause and fullscreen button input
+        if (Phaser.Input.Keyboard.JustDown(this.keyPause)) {
+            this.scene.pause().launch('pauseScene', { sceneTitle: 'shootingGalleryScene' });
+        }
+        if(Phaser.Input.Keyboard.JustDown(this.keyFullscreen)){
+            this.scale.toggleFullscreen();
+        }
     }
 
     createEnemies() {

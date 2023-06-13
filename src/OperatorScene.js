@@ -64,7 +64,6 @@ class OperatorScene extends Phaser.Scene {
         this.ringTones.push(this.sound.add('ring3', { volume: 0.05 }));
         
         this.frameTime = 0;
-
         timeLeft = secondsPerGame * 1000.0;
         secondsLeft = secondsPerGame;
         timeCounter.setText("Time: " + secondsPerGame);
@@ -93,7 +92,6 @@ class OperatorScene extends Phaser.Scene {
             this.scene.start("shootingGalleryScene");
         }
         
-        
         this.incomingCallTimer--;
         if(this.incomingCallTimer <= 0){
             let newTimer = Phaser.Math.Between(this.incomingCallBaseRate - this.incomingCallTimeVariance, 
@@ -114,6 +112,7 @@ class OperatorScene extends Phaser.Scene {
             }
         });
 
+        //Handle pause and fullscreen button input
         if (Phaser.Input.Keyboard.JustDown(this.keyPause)) {
             this.scene.pause().launch('pauseScene', { sceneTitle: 'operatorScene' });
         }

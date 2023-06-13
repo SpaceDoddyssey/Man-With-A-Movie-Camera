@@ -115,6 +115,7 @@ class EmergencyServices extends Phaser.Scene {
           this.ambulance.setAngularVelocity(0);
         }
 
+        //Handle pause and fullscreen button input
         if (Phaser.Input.Keyboard.JustDown(this.keyPause)) {
           this.scene.pause().launch('pauseScene', { sceneTitle: 'ambulanceScene' });
         }
