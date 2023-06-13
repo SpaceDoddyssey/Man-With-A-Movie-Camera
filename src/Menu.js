@@ -4,19 +4,21 @@ class Menu extends Phaser.Scene {
     }
 
     preload() {
-      this.load.path = 'assets/Sounds/';
-      this.load.audio('music', '1st Contact - The Long Let Go.mp3');
-      this.load.audio('ring1', 'Ring1.wav');
-      this.load.audio('ring2', 'Ring2.wav');
-      this.load.audio('ring3', 'Ring3.mp3');
+      this.load.path = 'assets/';
+      this.load.audio('music', 'Sounds/1st Contact - The Long Let Go.mp3');
+      this.load.audio('ring1', 'Sounds/Ring1.wav');
+      this.load.audio('ring2', 'Sounds/Ring2.wav');
+      this.load.audio('ring3', 'Sounds/Ring3.mp3');
+
+      this.load.image('bgImage', 'MenuBG.png');
     }
 
     create() {
         // menu text configuration
         let menuConfig = {
             fontFamily: 'Courier',
-            fontSize: '28px',
-            backgroundColor: '#F3B141',
+            fontSize: '40px',
+            backgroundColor: '#AAAAAA',
             color: '#000',
             align: 'center',
             padding: {
@@ -25,6 +27,9 @@ class Menu extends Phaser.Scene {
             },
             fixedWidth: 0
         }
+
+        // Menu background image
+        this.bgImage = this.add.image(centerX, centerY, 'bgImage');
 
         // Music
         if(musicPlaying == false){
@@ -35,32 +40,33 @@ class Menu extends Phaser.Scene {
 
         // show menu text
         this.add.text(centerX, centerY - 160, ' Man With A Movie Camera ', menuConfig).setOrigin(0.5);
-        menuConfig.backgroundColor = '#00FF00';
+        menuConfig.backgroundColor = '#F3B141';
+        menuConfig.fontSize = '28px'
 
-        const EmergencyButton = this.add.text(centerX, centerY - 80, ' Scene 1: Ambulance ', menuConfig).setOrigin(0.5).setInteractive();
-        EmergencyButton.on('pointerdown', (pointer) =>
-        {
+        const EmergencyButton = new Button(centerX, centerY-80, ' Scene 1: Ambulance ', this, () => {
           this.scene.stop().start('ambulanceScene');
-        });
+        }, menuConfig);
 
-        const OperatorButton = this.add.text(centerX, centerY , ' Scene 2: Operator ', menuConfig).setOrigin(0.5).setInteractive();
-        OperatorButton.on('pointerdown', (pointer) =>
-        {
+        const OperatorButton = new Button(centerX, centerY, ' Scene 2: Operator ', this, () => {
           this.scene.stop().start('operatorScene');
-        });      
+        }, menuConfig);
 
-        // const ShootingGalleryButton = this.add.text(centerX, centerY + 80, ' Shooting Gallery scene (Not Implemented) ', menuConfig).setOrigin(0.5).setInteractive();
-        // ShootingGalleryButton.on('pointerdown', (pointer) =>
-        // {
-        //   this.scene.start('shootingGalleryScene');
-        // });
+        const ShootingGalleryButton = new Button(centerX, centerY + 80, ' Scene 3: Shooting Gallery ', this, () => {
+          this.scene.stop().start('shootingGalleryScene');
+        }, menuConfig);
 
         menuConfig.backgroundColor = '#1111AA';
-        const CreditsButton = this.add.text(centerX, centerY + 160, ' Credits ', menuConfig).setOrigin(0.5).setInteractive();
-        CreditsButton.on('pointerdown', (pointer) =>
-        {
-          this.scene.start('creditsScene');
-        });
+        menuConfig.fontSize = '28px';
+        const CreditsButton = new Button(centerX, centerY + 160, ' Credits ', this, () => {
+          this.scene.stop().start('creditsScene');
+        }, menuConfig);
+
+
+        // const CreditsButton = this.add.text(centerX, centerY + 160, ' Credits ', menuConfig).setOrigin(0.5).setInteractive();
+        // CreditsButton.on('pointerdown', (pointer) =>
+        // {
+        //   this.scene.start('creditsScene');
+        // });
 
         score = 0;
 
