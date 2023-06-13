@@ -77,8 +77,8 @@ class EmergencyServices extends Phaser.Scene {
       secondsLeft = secondsPerGame;
       timeCounter.setText("Time: " + secondsPerGame);
 
-      //Show the tutorial
-      this.scene.pause().launch('emergTutorial');                
+      // Pause to show the tutorial      
+      this.scene.pause();  
     }
 
     update(time, delta){
@@ -90,10 +90,14 @@ class EmergencyServices extends Phaser.Scene {
         timeLeft -= this.frameTime; 
         this.frameTime = 0;
   
-
+        //Update the clock
         if(timeLeft / 1000.0 < secondsLeft){ 
           secondsLeft = Math.trunc(timeLeft / 1000.0);
           timeCounter.setText("Time: " + secondsLeft);
+        }
+        //Move to the next scene if time has run out
+        if(secondsLeft <= 0){
+          this.scene.stop().start('operatorScene');
         }
 
         //Handle ambulance movement
@@ -131,10 +135,6 @@ class EmergencyServices extends Phaser.Scene {
         }
 
         this.arrow.update();
-
-        if(secondsLeft <= 0){
-          this.scene.stop().start('operatorScene');
-        }
     }
 
     generateObjective(){

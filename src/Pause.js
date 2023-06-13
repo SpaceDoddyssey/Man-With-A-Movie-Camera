@@ -12,11 +12,15 @@ class Pause extends Phaser.Scene {
             this.scene.resume(this.sceneTitle).stop();
         })
 
-        // let menuButton = new Button(centerX, centerY - 100, 'Return to Menu', this, () => {
-        //     // .resume will start the update loop of the target scene again
-        //     // .stop will shutdown this scene, clear its display list, timers, etc.
-        //     this.scene.start('menuScene');
-        // })
+
+        //  console.log(this.manager.scenes);
+        let menuButton = new Button(centerX, centerY - 100, 'Return to Menu', this, () => {
+            // .resume will start the update loop of the target scene again
+            // .stop will shutdown this scene, clear its display list, timers, etc.
+            this.scene.stop(this.sceneTitle);
+            this.scene.stop('hudScene');
+            this.scene.start('menuScene');
+        })
 
         // input
         keyPause = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P)
