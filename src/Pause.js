@@ -5,13 +5,12 @@ class Pause extends Phaser.Scene {
 
     create(data) {
         this.sceneTitle = data.sceneTitle;
-       
+
         let pauseButton = new Button(centerX, centerY + 100, '(P)ause', this, () => {
             // .resume will start the update loop of the target scene again
             // .stop will shutdown this scene, clear its display list, timers, etc.
             this.scene.resume(this.sceneTitle).stop();
         })
-
 
         //  console.log(this.manager.scenes);
         let menuButton = new Button(centerX, centerY - 100, 'Return to Menu', this, () => {
@@ -33,6 +32,9 @@ class Pause extends Phaser.Scene {
         }
         if (Phaser.Input.Keyboard.JustDown(keyPause)) {
             // same as above
+            if(this.sceneTitle == 'shootingGalleryScene'){
+                this.input.setDefaultCursor('url(assets/Gallery/Crosshairs.png), pointer');
+            }
             this.scene.resume(this.sceneTitle).stop();
         }
     }

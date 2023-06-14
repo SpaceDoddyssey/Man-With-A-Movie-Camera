@@ -27,10 +27,8 @@ class ShootingGallery extends Phaser.Scene {
     create(){
         // Create background
         this.bg = this.add.sprite(centerX, centerY, 'fullbackground');
-        // This is so that, when I'm checking the list of objects you clicked on, I can check if the first object is the background (i.e., you missed)
+        // This bool is so that, when I'm checking the list of objects you clicked on, I can check if the first object is the background (i.e., you missed)
         this.bg.isBackground = true;
-        // This makes the cursor into the crosshair while over the background
-        this.bg.setInteractive({ cursor: 'url(assets/Gallery/Crosshairs.png) 32 32, auto' });
 
         // Create enemies
         this.enemies = []
@@ -39,7 +37,6 @@ class ShootingGallery extends Phaser.Scene {
         this.enemySprites = ['Brute', 'Soldier1', 'Soldier2', 'Uncle_Fascist'];
 
         this.rifleFX = this.sound.add('airRifle', { volume: 1 })
-        //this.input.setDefaultCursor('url(assets/Gallery/Crosshairs.png), pointer');
 
         // Set up mouse click event
         this.input.on('pointerdown', this.shoot, this);
@@ -104,6 +101,7 @@ class ShootingGallery extends Phaser.Scene {
         }
         //Finish the game if time has run out
         if(timeLeft <= 0){
+            this.input.setDefaultCursor('');
             this.scene.start("gameOverScene");
         }
 
@@ -115,6 +113,7 @@ class ShootingGallery extends Phaser.Scene {
         
         //Handle pause and fullscreen button input
         if (Phaser.Input.Keyboard.JustDown(this.keyPause)) {
+            this.input.setDefaultCursor('');
             this.scene.pause().launch('pauseScene', { sceneTitle: 'shootingGalleryScene' });
         }
         if(Phaser.Input.Keyboard.JustDown(this.keyFullscreen)){
