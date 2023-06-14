@@ -85,7 +85,7 @@ class OperatorScene extends Phaser.Scene {
         }
         
         if(timeLeft <= 0){
-            this.scene.launch('shootingGalleryScene').launch('shootingTutorial');
+            this.scene.stop().launch('shootingGalleryScene').launch('shootingTutorial');
         }
         
         this.incomingCallTimer--;
