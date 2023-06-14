@@ -27,6 +27,7 @@ class EmergencyServices extends Phaser.Scene {
       this.map = this.add.tilemap('tilemapJSON');
       const tileset       = this.map.addTilesetImage('tileset', 'tilesetImage');
       const roadLayer     = this.map.createLayer('Road', tileset, 0, 0);
+      const roadDecLayer  = this.map.createLayer('RoadDecorations', tileset, 0, 0);
       const buildingLayer = this.map.createLayer('Buildings', tileset, 0, 0);
       buildingLayer.setCollisionByProperty({ collides: true });
       this.matter.world.convertTilemapLayer(buildingLayer);
