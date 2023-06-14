@@ -5,7 +5,7 @@ class Credits extends Phaser.Scene {
 
     create(){
         let creditsConfig = {
-            fontFamily: 'Courier',
+            fontFamily: 'RedOctober',
             fontSize: '28px',
             backgroundColor: '#F3B141',
             color: '#000',
@@ -20,7 +20,7 @@ class Credits extends Phaser.Scene {
         this.bgImage = this.add.image(centerX, centerY, 'bgImage');
 
         this.add.text(centerX, centerY - 180, ' Cameron Dodd: \n Programming ', creditsConfig).setOrigin(0.5);
-        this.add.text(centerX, centerY - 90,  ' Miles Anderson: \n Programming (Shooting Gallery scene), Art ', creditsConfig).setOrigin(0.5);
+        this.add.text(centerX, centerY - 90,  ' Miles Anderson: \n Art, Misc. Programming', creditsConfig).setOrigin(0.5);
         this.add.text(centerX, centerY + 80,  ' Music: \n "The Long Let Go" by 1st Contact \n Licensed under CC BY-SA 4.0 \n https://freemusicarchive.org/music\n /1st-contact/single/the-long-let-go/ ', creditsConfig).setOrigin(0.5);
 
         creditsConfig.backgroundColor = '#1111AA';
