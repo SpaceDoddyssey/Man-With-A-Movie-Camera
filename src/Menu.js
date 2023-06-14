@@ -17,10 +17,10 @@ class Menu extends Phaser.Scene {
     create() {
         // menu text configuration
         let menuConfig = {
-            fontFamily: 'Courier',
+            fontFamily: 'kremlin',
             fontSize: '40px',
-            backgroundColor: '#AAAAAA',
-            color: '#000',
+            backgroundColor: '#000000',
+            color: '#FFF',
             align: 'center',
             padding: {
                 top: 5,
@@ -40,28 +40,30 @@ class Menu extends Phaser.Scene {
         musicPlaying = true;
 
         // show menu text
-        this.add.text(centerX, centerY - 160, ' Man With A Movie Camera ', menuConfig).setOrigin(0.5);
-        menuConfig.backgroundColor = '#F3B141';
+        this.add.text(centerX - 100, centerY - 160, ' Man With A Movie Camera ', menuConfig).setOrigin(0.5);
         menuConfig.fontSize = '28px'
+        menuConfig.backgroundColor = '#FFD700';
+        menuConfig.color = '#000000';
 
-        const EmergencyButton = new Button(centerX, centerY-80, ' Scene 1: Ambulance ', this, () => {
+        const EmergencyButton = new Button(centerX - 208, centerY-80, ' Scene 1: Ambulance ', this, () => {
           this.scene.start('hudScene');
           this.scene.launch('ambulanceScene').launch('emergTutorial');
         }, menuConfig);
 
-        const OperatorButton = new Button(centerX, centerY, ' Scene 2: Operator ', this, () => {
+        const OperatorButton = new Button(centerX - 214, centerY, ' Scene 2: Operator ', this, () => {
           this.scene.start('hudScene');
           this.scene.launch('operatorScene').launch('operatorTutorial');
         }, menuConfig);
 
-        const ShootingGalleryButton = new Button(centerX, centerY + 80, ' Scene 3: Shooting Gallery ', this, () => {
+        const ShootingGalleryButton = new Button(centerX - 150, centerY + 80, ' Scene 3: Shooting Gallery ', this, () => {
           this.scene.start('hudScene');
           this.scene.stop().launch('shootingGalleryScene').launch('shootingTutorial');
         }, menuConfig);
 
-        menuConfig.backgroundColor = '#1111AA';
+        menuConfig.backgroundColor = '#CC0000';
+        menuConfig.color = '#FFFFFF';
         menuConfig.fontSize = '28px';
-        const CreditsButton = new Button(centerX, centerY + 160, ' Credits ', this, () => {
+        const CreditsButton = new Button(centerX - 299, centerY + 160, ' Credits ', this, () => {
           this.scene.stop().start('creditsScene');
         }, menuConfig);
 
