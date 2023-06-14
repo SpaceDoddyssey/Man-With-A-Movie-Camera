@@ -5,10 +5,10 @@ class ShootingTutorial extends Phaser.Scene {
 
     create() {
         const TutStyle = {
-            fontFamily: 'American Typewriter',
-            fontSize: '28px',
+            fontFamily: 'RedOctober_Light',
+            fontSize: '24px',
             backgroundColor: '#F3B141',
-            color: '#843605',
+            color: '#000000',
             align: 'center'
         }
         let tutText = this.add.text(centerX, centerY, " Click on the targets as they pop up \n Be warned: You have less time than the other scenes! ", TutStyle).setOrigin(0.5);
