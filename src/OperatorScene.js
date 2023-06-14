@@ -89,7 +89,7 @@ class OperatorScene extends Phaser.Scene {
         }
         
         if(timeLeft <= 0){
-            this.scene.start("shootingGalleryScene");
+            this.scene.launch('shootingGalleryScene').launch('shootingTutorial');
         }
         
         this.incomingCallTimer--;
@@ -211,6 +211,10 @@ class OperatorScene extends Phaser.Scene {
     doDrag(pointer){
         this.dragObject.x = pointer.x;
         this.dragObject.y = pointer.y;
+
+        this.dragObject.line.destroy();
+        this.dragObject.line = this.add.line(0, 0, pointer.x, pointer.y, this.dragObject.offSideX, this.dragObject.offSideY, 0x000000).setOrigin(0);
+        this.dragObject.line.setLineWidth(5);
     }
     stopDrag(pointer){
         this.input.on('pointerdown', this.startDrag, this);
@@ -230,6 +234,10 @@ class OperatorScene extends Phaser.Scene {
 
         this.dragObject.x = xPos; this.dragObject.y = yPos;
         //console.log(xFloor, yFloor, pointer.x, pointer.y, xPos, yPos);
+
+        this.dragObject.line.destroy();
+        this.dragObject.line = this.add.line(0, 0, this.dragObject.x, this.dragObject.y, this.dragObject.offSideX, this.dragObject.offSideY, 0x000000).setOrigin(0);
+        this.dragObject.line.setLineWidth(5);
 
         //(Attempt to) plug it into the appropriate switch
         this.plugInto(xFloor, yFloor, this.dragObject);
@@ -285,6 +293,13 @@ class OperatorScene extends Phaser.Scene {
             plugSprite.setInteractive();
             plugSprite.coords = coords;
             this.plugs.push(plugSprite);
+
+            //Create the cable 
+            let leftOrRight = Math.random() < 0.5 ? -1 : 1;
+            plugSprite.offSideX = (leftOrRight > 0 ? -10 : game.config.width + 10);
+            plugSprite.offSideY = Phaser.Math.Between (0, game.config.height);
+            plugSprite.line = this.add.line(0, 0, xPos, yPos, plugSprite.offSideX, plugSprite.offSideY, 0x000000).setOrigin(0);
+            plugSprite.line.setLineWidth(5);
         }
     }
 }

@@ -102,7 +102,7 @@ class ShootingGallery extends Phaser.Scene {
         //Finish the game if time has run out
         if(timeLeft <= 0){
             this.input.setDefaultCursor('');
-            this.scene.start("gameOverScene");
+            this.scene.stop().start("gameOverScene");
         }
 
         //Spawn enemies if it's time

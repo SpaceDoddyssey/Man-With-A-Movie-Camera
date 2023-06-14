@@ -97,7 +97,7 @@ class EmergencyServices extends Phaser.Scene {
         }
         //Move to the next scene if time has run out
         if(secondsLeft <= 0){
-          this.scene.stop().start('operatorScene');
+          this.scene.stop().launch('operatorScene').launch('operatorTutorial');
         }
 
         //Handle ambulance movement
