@@ -11,7 +11,7 @@ class ShootingTutorial extends Phaser.Scene {
             color: '#843605',
             align: 'center'
         }
-        let tutText = this.add.text(centerX, centerY, " Click on the targets as they pop up ", TutStyle).setOrigin(0.5);
+        let tutText = this.add.text(centerX, centerY, " Click on the targets as they pop up \n Be warned: You have less time than the other scenes! ", TutStyle).setOrigin(0.5);
 
         let menuButton = new Button(centerX, centerY - 100, 'Return to Menu', this, () => {
             this.scene.stop('shootingGalleryScene');

@@ -239,9 +239,6 @@ class OperatorScene extends Phaser.Scene {
         // Calculate the starting position for the grid
         this.startX = (this.cameras.main.width  - (this.spriteWidth  * this.gridWidth ) ) / 2;
         this.startY = (this.cameras.main.height - (this.spriteHeight * this.gridHeight) ) / 2 + 32;
-    
-        // Create a group to hold the switches
-        //const switchesGroup = this.physics.add.group();
 
         // Generate and distribute switches in the grid
         for (let row = 0; row < this.gridHeight; row++) {
@@ -253,7 +250,6 @@ class OperatorScene extends Phaser.Scene {
                 switchSprite.occupied = false;
                 switchSprite.incomingCall = false;
                 this.switches.push(switchSprite);
-                //switchesGroup.add(switchSprite);
             }
         }
     }
