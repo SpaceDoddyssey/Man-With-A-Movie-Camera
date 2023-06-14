@@ -11,7 +11,7 @@ class EmergTutorial extends Phaser.Scene {
             color: '#000000',
             align: 'center'
         }
-        let tutText = this.add.text(centerX, centerY, " Use W/S to move forward/back \n A/D turn left and right \n Reach as many objectives as you can ", TutStyle).setOrigin(0.5);
+        let tutText = this.add.text(centerX, centerY, " Use W/S to move forward/back \n A/D turn left and right \n Reach as many patients as you can ", TutStyle).setOrigin(0.5);
 
         let menuButton = new Button(centerX, centerY - 100, 'Return to Menu', this, () => {
             this.scene.stop('ambulanceScene');
