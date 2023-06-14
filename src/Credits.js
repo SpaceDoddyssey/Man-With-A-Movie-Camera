@@ -5,7 +5,7 @@ class Credits extends Phaser.Scene {
 
     create(){
         let creditsConfig = {
-            fontFamily: 'RedOctober',
+            fontFamily: 'Red October',
             fontSize: '28px',
             backgroundColor: '#F3B141',
             color: '#000',
