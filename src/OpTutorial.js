@@ -5,10 +5,10 @@ class OpTutorial extends Phaser.Scene {
 
     create() {
         const TutStyle = {
-            fontFamily: 'American Typewriter',
-            fontSize: '28px',
+            fontFamily: 'RedOctober_Light',
+            fontSize: '24px',
             backgroundColor: '#F3B141',
-            color: '#843605',
+            color: '#000000',
             align: 'center'
         }
         let tutText = this.add.text(centerX, centerY, " Incoming calls will light up red \n Click and drag plugs to answer the calls \n Busy plugs will be yellow \n They will turn green when the call is done \n Answer as many calls as you can ", TutStyle).setOrigin(0.5);
