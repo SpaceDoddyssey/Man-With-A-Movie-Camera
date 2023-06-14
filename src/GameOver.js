@@ -10,7 +10,7 @@ class GameOver extends Phaser.Scene {
     create() {
         keyESC = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
         let textConfig = {
-            fontFamily: 'Georgia',
+            fontFamily: 'RedOctober_Light',
             fontSize: '40px',
             color: '#FFFFFF',
             align: 'right',

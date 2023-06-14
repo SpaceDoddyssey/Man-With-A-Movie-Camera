@@ -48,7 +48,7 @@ let score = 0;
 let highScore = 0;
 
 //Timer stuff
-let secondsPerGame = 40;
+let secondsPerGame = 1;
 let timeLeft; 
 let secondsLeft = secondsPerGame;
 let newHighScore = false;

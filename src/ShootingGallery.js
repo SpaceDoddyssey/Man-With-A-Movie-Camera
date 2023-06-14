@@ -62,13 +62,18 @@ class ShootingGallery extends Phaser.Scene {
     shoot(pointer, targets){
         this.rifleFX.play();
         
-        console.log(targets[0] != null);
-
         targets.forEach(target => {
-            if(target.isBackground == undefined){
-                this.hit(target);
-            }
+            this.hit(target);
         })
+
+        //Creates the little temporary explosion effect    
+        if(targets[0] != undefined){
+            let sprite = this.add.sprite(pointer.x, pointer.y, 'bang').setOrigin(0.5);
+            let timer = this.time.addEvent({
+                delay: 100, 
+                callback: () => sprite.destroy(),
+            });
+        }
     }
 
     hit(target){
@@ -102,6 +107,7 @@ class ShootingGallery extends Phaser.Scene {
         //Finish the game if time has run out
         if(timeLeft <= 0){
             this.input.setDefaultCursor('');
+            this.scene.stop('hudScene');
             this.scene.stop().start("gameOverScene");
         }
 
