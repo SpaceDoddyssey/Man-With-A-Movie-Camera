@@ -17,11 +17,11 @@ class Menu extends Phaser.Scene {
     create() {
         // menu text configuration
         let menuConfig = {
-            fontFamily: 'kremlin',
+            fontFamily: 'RedOctober_Fat',
             fontSize: '40px',
             backgroundColor: '#000000',
             color: '#FFF',
-            align: 'center',
+            align: 'left',
             padding: {
                 top: 5,
                 bottom: 5,
@@ -39,33 +39,34 @@ class Menu extends Phaser.Scene {
         }
         musicPlaying = true;
 
+        let menuButtonXOffset = 400;
         // show menu text
-        this.add.text(centerX - 100, centerY - 160, ' Man With A Movie Camera ', menuConfig).setOrigin(0.5);
+        this.add.text(centerX - menuButtonXOffset, centerY - 160, ' Man With A Movie Camera ', menuConfig);
         menuConfig.fontSize = '28px'
         menuConfig.backgroundColor = '#FFD700';
         menuConfig.color = '#000000';
 
-        const EmergencyButton = new Button(centerX - 208, centerY-80, ' Scene 1: Ambulance ', this, () => {
+        const EmergencyButton = new Button(centerX - menuButtonXOffset, centerY-80, ' Scene 1: Ambulance ', this, () => {
           this.scene.start('hudScene');
           this.scene.launch('ambulanceScene').launch('emergTutorial');
-        }, menuConfig);
+        }, menuConfig, 0);
 
-        const OperatorButton = new Button(centerX - 214, centerY, ' Scene 2: Operator ', this, () => {
-          this.scene.start('hudScene');
+        const OperatorButton = new Button(centerX - menuButtonXOffset, centerY, ' Scene 2: Operator ', this, () => {
+          this.scene.start('hudScene')
           this.scene.launch('operatorScene').launch('operatorTutorial');
-        }, menuConfig);
+        }, menuConfig, 0);
 
-        const ShootingGalleryButton = new Button(centerX - 150, centerY + 80, ' Scene 3: Shooting Gallery ', this, () => {
+        const ShootingGalleryButton = new Button(centerX - menuButtonXOffset, centerY + 80, ' Scene 3: Shooting Gallery ', this, () => {
           this.scene.start('hudScene');
           this.scene.stop().launch('shootingGalleryScene').launch('shootingTutorial');
-        }, menuConfig);
+        }, menuConfig, 0);
 
         menuConfig.backgroundColor = '#CC0000';
         menuConfig.color = '#FFFFFF';
         menuConfig.fontSize = '28px';
-        const CreditsButton = new Button(centerX - 299, centerY + 160, ' Credits ', this, () => {
+        const CreditsButton = new Button(centerX - menuButtonXOffset, centerY + 160, ' Credits ', this, () => {
           this.scene.stop().start('creditsScene');
-        }, menuConfig);
+        }, menuConfig, 0);
 
         score = 0;
 

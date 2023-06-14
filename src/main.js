@@ -58,7 +58,7 @@ let scoreCounter, timeCounter;
 
 //Text configs
 const ScoreConfig = {
-    fontFamily: 'American Typewriter',
+    fontFamily: 'RedOctober_Light',
     fontSize: '28px',
     backgroundColor: '#F3B141',
     color: '#843605',
@@ -69,8 +69,8 @@ const ScoreConfig = {
         left: 5,
         right: 5
     },
-    fixedWidth: 140,
+    fixedWidth: 200,
     setDepth: 0
 }
 
-const TimeConfig = Object.assign({}, ScoreConfig, { fixedWidth: 120 });
+const TimeConfig = Object.assign({}, ScoreConfig, { fixedWidth: 160 });

@@ -7,7 +7,7 @@ class Credits extends Phaser.Scene {
         let creditsConfig = {
             fontFamily: 'RedOctober',
             fontSize: '28px',
-            backgroundColor: '#F3B141',
+            backgroundColor: '#FFD700',
             color: '#000',
             align: 'center',
             padding: {
@@ -23,8 +23,8 @@ class Credits extends Phaser.Scene {
         this.add.text(centerX, centerY - 90,  ' Miles Anderson: \n Art, Misc. Programming', creditsConfig).setOrigin(0.5);
         this.add.text(centerX, centerY + 80,  ' Music: \n "The Long Let Go" by 1st Contact \n Licensed under CC BY-SA 4.0 \n https://freemusicarchive.org/music\n /1st-contact/single/the-long-let-go/ ', creditsConfig).setOrigin(0.5);
 
-        creditsConfig.backgroundColor = '#1111AA';
-
+        creditsConfig.backgroundColor = '#CC0000';
+        creditsConfig.color = '#FFFFFF'; 
         const MenuButton = new Button(centerX, centerY + 190, ' Return to Menu ', this, () => {
             this.scene.stop().start('menuScene');
         }, creditsConfig);
