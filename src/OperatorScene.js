@@ -14,17 +14,6 @@ class OperatorScene extends Phaser.Scene {
     }
 
     create(){
-        // Enable Matter physics
-        const config = {
-            default: 'matter',
-            matter: {
-                debug: false
-            }
-        };
-        // this.physics.world.enable(this, config);
-        // this.matter.world.setBounds();
-        // this.matter.world.gravity.y = 0;
-
         this.switches = [];
         this.plugs = [];
 
@@ -32,6 +21,9 @@ class OperatorScene extends Phaser.Scene {
 
         let bg = this.add.sprite(centerX, centerY, 'background');
         bg.scale = 1.0;
+
+        //this.graphics is used for drawing the cables
+        this.graphics = this.add.graphics();
 
         //Spawn grid
         this.spriteWidth = 100;   // Width of the space given to each sprite
@@ -46,7 +38,7 @@ class OperatorScene extends Phaser.Scene {
         this.numFreePlugs = this.numPlugs;
         this.spawnPlugs(this.numPlugs);
 
-        //Initialize call variables
+        //Initialize variables for the incoming call system
         this.incomingCallTimer = 40; //Ticks left before receiving a new call
         this.incomingCallBaseRate = 100; 
         this.incomingCallTimeVariance = 40
@@ -58,11 +50,13 @@ class OperatorScene extends Phaser.Scene {
 
         this.score = 0;
 
+        //The list of ring sounds that can play when a call is received
         this.ringTones = [];
         this.ringTones.push(this.sound.add('ring1', { volume: 0.06 }));
         this.ringTones.push(this.sound.add('ring2', { volume: 0.03 }));
         this.ringTones.push(this.sound.add('ring3', { volume: 0.05 }));
         
+        //Variables used in handling the passage of time
         this.frameTime = 0;
         timeLeft = secondsPerGame * 1000.0;
         secondsLeft = secondsPerGame;
@@ -70,6 +64,8 @@ class OperatorScene extends Phaser.Scene {
 
         this.keyPause = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P)
         this.keyFullscreen = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F)
+
+        this.drawPlugCables();
 
         this.scene.pause();
     }
@@ -119,6 +115,52 @@ class OperatorScene extends Phaser.Scene {
         if(Phaser.Input.Keyboard.JustDown(this.keyFullscreen)){
             this.scale.toggleFullscreen();
         }
+
+        this.drawPlugCables();
+    }
+
+    drawPlugCables(){
+        //Thanks to user "not luke#9330" on the Phaser discord for assistance with this 
+        //- See catenary-curve.js 
+        this.graphics.clear();
+
+        //the length parameter determines how long the arc is in total
+        //If the plug and the offscreen 'target' are closer than maxDist, 
+        //we use maxdist to get a tighter curve and simulate drooping. 
+        //Otherwise, we set the limit to slightly above the distance, 
+        //so it doesn't pull completely straight
+        let maxDist = 600;  
+        this.graphics.lineStyle(6, 0x000000, 1.0);
+        this.graphics.setDepth(5);
+        this.plugs.forEach(plug => {
+            
+            let dist = Phaser.Math.Distance.Between(plug.x, plug.y, plug.offSideX, plug.offSideY);
+            if(dist > maxDist){
+                dist *= 1.01;
+            } else {
+                dist = maxDist * 1.01; //so we get drooping all the way to maxDist
+            }
+        
+            const point1 = new Phaser.Math.Vector2(plug.x, plug.y);
+            const point2 = new Phaser.Math.Vector2(plug.offSideX, plug.offSideY);
+            const catenary = getCatenaryCurve(point1, point2, dist);
+            if (catenary.type === "quadraticCurve") {
+                // draw quadratic curves to create the catenary
+                let p0 = catenary.start;
+                catenary.curves.forEach(curve => {
+                    const p1 = [curve[0], curve[1]];
+                    const p2 = [curve[2], curve[3]];
+                    new Phaser.Curves.QuadraticBezier([...p0, ...p1, ...p2]).draw(this.graphics);
+                    p0 = p2;
+                });
+                // finish last segment
+                this.graphics.beginPath();
+                this.graphics.moveTo(...p0);
+                this.graphics.lineTo(point2.x, point2.y);
+                this.graphics.closePath();
+                this.graphics.strokePath();
+            }
+        });
     }
 
     receiveCall(){
@@ -150,7 +192,6 @@ class OperatorScene extends Phaser.Scene {
 
     plugInto(x, y, plug){
         let s = this.switches[this.gridWidth * y + x];
-        //console.log(x, y, plug.switch.x, plug.switch.y, plug.switch.occupied, s.occupied);
         if(s.occupied){
             this.reset(plug);
             return;
@@ -160,7 +201,6 @@ class OperatorScene extends Phaser.Scene {
         s.plug = plug;
         plug.switch.occupied = false;
         plug.switch = s;
-        //console.log(s.x, s.y);
 
         if(s.incomingCall){
             this.connectCall(s);
@@ -190,14 +230,8 @@ class OperatorScene extends Phaser.Scene {
 
 
 
-
-
-
-
-
-
-
     startDrag(pointer, targets){
+        //Called when we begin dragging something
         this.dragObject = targets[0];
         if(this.dragObject != undefined && this.dragObject.callState != this.busyState){
             this.dragObject.oldX = this.dragObject.x;
@@ -209,15 +243,12 @@ class OperatorScene extends Phaser.Scene {
         }
     }
     doDrag(pointer){
+        //Called every frame while dragging something
         this.dragObject.x = pointer.x;
         this.dragObject.y = pointer.y;
-
-        this.dragObject.line.destroy();
-        this.dragObject.line = this.add.line(0, 0, pointer.x, pointer.y, this.dragObject.offSideX, this.dragObject.offSideY, 0x000000).setOrigin(0);
-        this.dragObject.line.setLineWidth(5);
-        this.dragObject.line.setDepth(10);
     }
     stopDrag(pointer){
+        //Called when we release the mouse while dragging something
         this.input.on('pointerdown', this.startDrag, this);
         this.input.off('pointermove', this.doDrag, this);
         this.input.off('pointerup', this.stopDrag, this);
@@ -234,12 +265,6 @@ class OperatorScene extends Phaser.Scene {
         let yPos = this.startY + this.spriteHeight / 2 + (yFloor * this.spriteHeight) - 14; //I have absolutely no idea why this -14 is necessary but it is
 
         this.dragObject.x = xPos; this.dragObject.y = yPos;
-        //console.log(xFloor, yFloor, pointer.x, pointer.y, xPos, yPos);
-
-        this.dragObject.line.destroy();
-        this.dragObject.line = this.add.line(0, 0, this.dragObject.x, this.dragObject.y, this.dragObject.offSideX, this.dragObject.offSideY, 0x000000).setOrigin(0);
-        this.dragObject.line.setLineWidth(5);
-        this.dragObject.line.setDepth(10);
 
         //(Attempt to) plug it into the appropriate switch
         this.plugInto(xFloor, yFloor, this.dragObject);
@@ -269,6 +294,7 @@ class OperatorScene extends Phaser.Scene {
             let y = Phaser.Math.Between(0, this.gridHeight-1);
             let coords = [ x, y ];
             
+            //Loop until we find a valid place to put a plug
             let failure = false;
             for (let index = 0; index < this.plugs.length; index++) {
                 const plug = this.plugs[index];
@@ -282,12 +308,13 @@ class OperatorScene extends Phaser.Scene {
                 continue;
             }
 
-            //console.log(y, x, this.gridWidth * y + x)
+            //Set some variables and get some variables from the switch
             let s = this.switches[this.gridWidth * y + x];
             s.occupied = true;
             let xPos = s.x;
             let yPos = s.y;
 
+            //Actually create the plug
             let plugSprite = this.add.sprite(xPos, yPos, 'plugSprite').setOrigin(0.5, 0.5);
             s.plug = plugSprite;
             plugSprite.switch = s;
@@ -296,13 +323,12 @@ class OperatorScene extends Phaser.Scene {
             plugSprite.coords = coords;
             this.plugs.push(plugSprite);
 
-            //Create the cable 
+            //Variables needed for the cable 
             let leftOrRight = Math.random() < 0.5 ? -1 : 1;
-            plugSprite.offSideX = (leftOrRight > 0 ? -10 : game.config.width + 10);
-            plugSprite.offSideY = Phaser.Math.Between (0, game.config.height);
-            plugSprite.line = this.add.line(0, 0, xPos, yPos, plugSprite.offSideX, plugSprite.offSideY, 0x000000).setOrigin(0);
-            plugSprite.line.setLineWidth(5);
-            plugSprite.line.setDepth(10);
+            plugSprite.offSideX = (leftOrRight > 0 
+                ? Phaser.Math.Between(-200, -20) 
+                : game.config.width + Phaser.Math.Between(20, 200));
+            plugSprite.offSideY = Phaser.Math.Between (this.startY, game.config.height - this.startY);
         }
     }
 }
