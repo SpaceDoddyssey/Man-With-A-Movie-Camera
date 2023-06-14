@@ -5,13 +5,7 @@ class Pause extends Phaser.Scene {
 
     create(data) {
         this.sceneTitle = data.sceneTitle;
-
-        let pauseButton = new Button(centerX, centerY + 100, '(P)ause', this, () => {
-            // .resume will start the update loop of the target scene again
-            // .stop will shutdown this scene, clear its display list, timers, etc.
-            this.scene.resume(this.sceneTitle).stop();
-        })
-
+        
         //  console.log(this.manager.scenes);
         let menuButton = new Button(centerX, centerY - 100, 'Return to Menu', this, () => {
             // .resume will start the update loop of the target scene again
@@ -20,6 +14,13 @@ class Pause extends Phaser.Scene {
             this.scene.stop('hudScene');
             this.scene.start('menuScene');
         })
+
+        let playButton = new Button(centerX, centerY + 100, '(P)lay', this, () => {
+            // .resume will start the update loop of the target scene again
+            // .stop will shutdown this scene, clear its display list, timers, etc.
+            this.scene.resume(this.sceneTitle).stop();
+        })
+
 
         // input
         keyPause = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P)

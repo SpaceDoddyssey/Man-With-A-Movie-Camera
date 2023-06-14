@@ -11,7 +11,7 @@ class Button {
         if(style){
             button.setStyle(style)
         } else {
-            button.setStyle({ backgroundColor: '#F3B141', fill: '#FFFFF' })
+            button.setStyle({ fontFamily: 'RedOctober_Light', backgroundColor: '#F3B141', fill: '#000000' })
         }
     }
 }

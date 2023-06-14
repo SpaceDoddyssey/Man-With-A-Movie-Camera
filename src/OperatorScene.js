@@ -215,6 +215,7 @@ class OperatorScene extends Phaser.Scene {
         this.dragObject.line.destroy();
         this.dragObject.line = this.add.line(0, 0, pointer.x, pointer.y, this.dragObject.offSideX, this.dragObject.offSideY, 0x000000).setOrigin(0);
         this.dragObject.line.setLineWidth(5);
+        this.dragObject.line.setDepth(10);
     }
     stopDrag(pointer){
         this.input.on('pointerdown', this.startDrag, this);
@@ -238,6 +239,7 @@ class OperatorScene extends Phaser.Scene {
         this.dragObject.line.destroy();
         this.dragObject.line = this.add.line(0, 0, this.dragObject.x, this.dragObject.y, this.dragObject.offSideX, this.dragObject.offSideY, 0x000000).setOrigin(0);
         this.dragObject.line.setLineWidth(5);
+        this.dragObject.line.setDepth(10);
 
         //(Attempt to) plug it into the appropriate switch
         this.plugInto(xFloor, yFloor, this.dragObject);
@@ -300,6 +302,7 @@ class OperatorScene extends Phaser.Scene {
             plugSprite.offSideY = Phaser.Math.Between (0, game.config.height);
             plugSprite.line = this.add.line(0, 0, xPos, yPos, plugSprite.offSideX, plugSprite.offSideY, 0x000000).setOrigin(0);
             plugSprite.line.setLineWidth(5);
+            plugSprite.line.setDepth(10);
         }
     }
 }
