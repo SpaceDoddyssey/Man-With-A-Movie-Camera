@@ -15,4 +15,3 @@ class HUDScene extends Phaser.Scene {
         timeCounter.setText("Time: " + secondsLeft);
     }
 }
-// Miles Re-commit test
