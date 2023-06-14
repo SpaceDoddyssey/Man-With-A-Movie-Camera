@@ -62,7 +62,6 @@ class Menu extends Phaser.Scene {
         }, menuConfig, 0);
 
         menuConfig.backgroundColor = '#CC0000';
-        menuConfig.color = '#FFFFFF';
         menuConfig.fontSize = '28px';
         const CreditsButton = new Button(centerX - menuButtonXOffset, centerY + 160, ' Credits ', this, () => {
           this.scene.stop().start('creditsScene');
