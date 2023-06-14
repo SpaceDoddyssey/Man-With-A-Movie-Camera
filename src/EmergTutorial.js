@@ -5,10 +5,10 @@ class EmergTutorial extends Phaser.Scene {
 
     create() {
         const TutStyle = {
-            fontFamily: 'American Typewriter',
-            fontSize: '28px',
+            fontFamily: 'RedOctober_Light',
+            fontSize: '24px',
             backgroundColor: '#F3B141',
-            color: '#843605',
+            color: '#000000',
             align: 'center'
         }
         let tutText = this.add.text(centerX, centerY, " Use W/S to move forward/back \n A/D turn left and right \n Reach as many objectives as you can ", TutStyle).setOrigin(0.5);
