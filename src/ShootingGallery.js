@@ -154,8 +154,8 @@ class ShootingGallery extends Phaser.Scene {
             repeat: -1
         });
         this.enemies.push(this.enemySlot1);
-        this.enemySlot1.timeUp = 4000;
-        this.enemySlot1.scoreVal = 3;
+        this.enemySlot1.timeUp = 2000;
+        this.enemySlot1.scoreVal = 2;
   
         // enemySlot 2: Moves across the screen in a sine wave pattern
         this.enemySlot2 = this.add.sprite(50, 150, 'enemySlot2');
@@ -168,28 +168,28 @@ class ShootingGallery extends Phaser.Scene {
             ease: 'Sine.easeInOut'
         });
         this.enemies.push(this.enemySlot2);
-        this.enemySlot2.timeUp = 3000;
+        this.enemySlot2.timeUp = 2000;
         this.enemySlot2.scoreVal = 2;
 
         // enemySlots 3-6: Stationary targets
         this.enemySlot3 = this.add.sprite(750, 300, 'enemySlot3');
         this.enemies.push(this.enemySlot3);
-        this.enemySlot3.timeUp = 2500;
+        this.enemySlot3.timeUp = 1500;
         this.enemySlot3.scoreVal = 1;
 
         this.enemySlot4 = this.add.sprite(750, 500, 'enemySlot4');
         this.enemies.push(this.enemySlot4);
-        this.enemySlot4.timeUp = 2500;
+        this.enemySlot4.timeUp = 1500;
         this.enemySlot4.scoreVal = 1;
 
         this.enemySlot5 = this.add.sprite(200, 500, 'enemySlot5');
         this.enemies.push(this.enemySlot5);
-        this.enemySlot5.timeUp = 2500;
+        this.enemySlot5.timeUp = 1500;
         this.enemySlot5.scoreVal = 1;
 
         this.enemySlot6 = this.add.sprite(200, 300, 'enemySlot6');
         this.enemies.push(this.enemySlot6);
-        this.enemySlot6.timeUp = 2500;
+        this.enemySlot6.timeUp = 1500;
         this.enemySlot6.scoreVal = 1;
 
         this.enemies.forEach(enemy => {
