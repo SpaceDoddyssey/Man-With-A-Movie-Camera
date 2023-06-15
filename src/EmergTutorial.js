@@ -7,7 +7,7 @@ class EmergTutorial extends Phaser.Scene {
         const TutStyle = {
             fontFamily: 'RedOctober_Light',
             fontSize: '24px',
-            backgroundColor: '#F3B141',
+            backgroundColor: '#FFD700',
             color: '#000000',
             align: 'center'
         }

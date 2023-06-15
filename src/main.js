@@ -60,8 +60,8 @@ let scoreCounter, timeCounter;
 const ScoreConfig = {
     fontFamily: 'RedOctober_Light',
     fontSize: '28px',
-    backgroundColor: '#F3B141',
-    color: '#843605',
+    backgroundColor: '#FFD700',
+    color: '#000000',
     align: 'left',
     padding: {
         top: 5,

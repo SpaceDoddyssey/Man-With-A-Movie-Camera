@@ -15,7 +15,7 @@ class EmergencyServices extends Phaser.Scene {
     
     preload() {
         this.load.path = 'assets/Emergency/';
-        this.load.image('ambulance',    'ambulance.png');
+        this.load.image('ambulance',    'Ambulance.png');
         this.load.image('arrow',        'arrow.png');
         this.load.image('objective',    'ObjectiveSprite.png');
         this.load.image('tilesetImage', 'tileset.png');

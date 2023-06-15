@@ -10,7 +10,7 @@ class Button {
         if(style){
             button.setStyle(style)
         } else {
-            button.setStyle({ fontFamily: 'RedOctober_Light', backgroundColor: '#F3B141', fill: '#000000' })
+            button.setStyle({ fontFamily: 'RedOctober_Light', backgroundColor: '#FFD700', fill: '#000000' })
         }
         if(origin != undefined){
             button.setOrigin(origin)
