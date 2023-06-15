@@ -53,7 +53,7 @@ class EmergencyServices extends Phaser.Scene {
       this.keyFullscreen = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F)
 
       //Set up ambulance
-      this.ambulance = this.matter.add.sprite(centerX, centerY, 'ambulance').setOrigin(0.5, 0.5);
+      this.ambulance = this.matter.add.sprite(centerX - 150, centerY + 180, 'ambulance').setOrigin(0.5, 0.5);
       this.ambulanceScale = 0.5;
       this.ambulance.setScale(this.ambulanceScale);
       this.ambulance.speed = 0.0015 * this.ambulanceScale;
