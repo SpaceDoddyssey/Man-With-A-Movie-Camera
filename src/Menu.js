@@ -34,8 +34,8 @@ class Menu extends Phaser.Scene {
 
         // Music
         if(musicPlaying == false){
-          this.music = this.sound.add('music');
-          this.sound.play('music', { volume: 0.4, repeat: -1 });
+          this.music = this.sound.add('music', { volume: 0.4, loop: true });
+          this.music.play();
         }
         musicPlaying = true;
 

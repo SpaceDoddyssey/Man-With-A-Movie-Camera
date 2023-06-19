@@ -85,6 +85,11 @@ class OperatorScene extends Phaser.Scene {
         }
         
         if(timeLeft <= 0){
+            this.switches.forEach(s => {
+                if(s.ringTone != undefined){
+                    s.ringTone.stop();
+                }
+            });
             this.scene.stop().launch('shootingGalleryScene').launch('shootingTutorial');
         }
         
